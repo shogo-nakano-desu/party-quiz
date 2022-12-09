@@ -1,0 +1,18 @@
+{
+  "language": "en",
+  "ignorePaths": [
+    "**/*.d.ts",
+    "node_modules",
+    "dist",
+    "mockServiceWorker.js",
+    "coverage",
+    "tsconfig.tsbuildinfo"
+  ],
+  "dictionaries": [],
+  "words": [
+    "desu",
+    "nakano",
+    "shogo"
+  ],
+  "ignoreWords": []
+}

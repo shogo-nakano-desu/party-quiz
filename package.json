@@ -1,0 +1,59 @@
+{
+  "name": "party-quiz",
+  "version": "0.0.1",
+  "private": true,
+  "description": "quiz app that will be used when we have party",
+  "repository": "https://github.com/shogo-nakano-desu/party-quiz.git",
+  "author": "shogo-nakano-desu",
+  "engines": {
+    "node": "16"
+  },
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore --fix './apps/**/*.{ts,tsx}' && prettier --ignore-path .gitignore  --write './apps/**/*.{ts,tsx}'",
+    "lint-staged": "lint-staged"
+  },
+  "devDependencies": {
+    "cspell": "5.21.2",
+    "env-cmd": "10.1.0",
+    "eslint": "8.26.0",
+    "eslint-plugin-jest": "25.3.4",
+    "jest": "29.2.1",
+    "prettier": "2.5.1",
+    "prettier-plugin-organize-imports": "2.3.4",
+    "prettier-plugin-package": "1.3.0",
+    "typescript": "4.5.4"
+  },
+  "resolutions": {
+    "@typescript-eslint/eslint-plugin": "5.13.0",
+    "eslint": "8.26.0",
+    "eslint-plugin-jest": "25.3.4",
+    "jest": "29.3.1",
+    "typescript": "4.5.4"
+  },
+  "lint-staged": {
+    "*.*": [
+      "cspell --no-must-find-files"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,yml,md}": [
+      "prettier --write"
+    ],
+    "!(*schema).graphql": [
+      "prettier --write"
+    ],
+    "*.prisma": [
+      "yarn workspace backend prisma format"
+    ]
+  },
+  "packageManager": "yarn@3.1.1",
+  "volta": {
+    "node": "16.14.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ]
+}
