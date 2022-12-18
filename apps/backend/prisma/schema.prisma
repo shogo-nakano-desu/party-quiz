@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Answer {
+  option_1
+  option_2
+  option_3
+  option_4
+}
+
+model question {
+  id             String           @id
+  name           String
+  option_1       String
+  option_2       String
+  option_3       String
+  option_4       String
+  answer         Answer
+  created_at     DateTime         @db.Timestamptz
+  session_detail session_detail[]
+}
+
+model user_answer {
+  user_id      String   @id
+  question_id  String
+  answer       Answer
+  requested_at DateTime @db.Timestamptz
+}
+
+model session_detail {
+  id          String   @id
+  session_id  String
+  question_id String
+  session     session  @relation(fields: [session_id], references: [id])
+  question    question @relation(fields: [question_id], references: [id])
+  started_at  DateTime @db.Timestamptz
+  end_at      DateTime @db.Timestamptz
+}
+
+model session {
+  id             String           @id
+  name           String
+  created_at     DateTime         @db.Timestamptz
+  session_detail session_detail[]
+}
