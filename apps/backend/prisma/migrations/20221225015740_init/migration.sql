@@ -31,7 +31,7 @@ CREATE TABLE "session_detail" (
     "session_id" TEXT NOT NULL,
     "question_id" TEXT NOT NULL,
     "started_at" TIMESTAMPTZ NOT NULL,
-    "end_at" TIMESTAMPTZ NOT NULL,
+    "ended_at" TIMESTAMPTZ NOT NULL,
 
     CONSTRAINT "session_detail_pkey" PRIMARY KEY ("id")
 );

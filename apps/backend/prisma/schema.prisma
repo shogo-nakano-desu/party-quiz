@@ -43,7 +43,7 @@ model session_detail {
   session     session  @relation(fields: [session_id], references: [id])
   question    question @relation(fields: [question_id], references: [id])
   started_at  DateTime @db.Timestamptz
-  end_at      DateTime @db.Timestamptz
+  ended_at    DateTime @db.Timestamptz
 }
 
 model session {
