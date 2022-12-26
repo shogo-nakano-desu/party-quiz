@@ -48,8 +48,6 @@ describe('AppController (e2e)', () => {
       .expect(200);
   });
 
-  //mutation updateReceivingSlipDetailPage($receiveAndInspectQuantityInputs: [ReceiveAndInspectQuantityInput!]!)
-  //{\n  receiveAndInspectQuantity(\n    receiveAndInspectQuantityInputs: $receiveAndInspectQuantityInputs\n  )\n}\n"
   it('should create a new user_answer and have it added to the array', async () => {
     return request(app.getHttpServer())
       .post(gql)
