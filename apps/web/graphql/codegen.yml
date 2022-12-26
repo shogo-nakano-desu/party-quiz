@@ -1,0 +1,11 @@
+schema: graphql/schema.graphql
+documents: src/**/*.graphql
+generates:
+  graphql/generated.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+config:
+  scalars:
+    # ref https://github.com/dotansimha/graphql-code-generator/issues/153
+    DateTime: string
