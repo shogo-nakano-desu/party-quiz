@@ -10,18 +10,14 @@ export class UserAnswerResolver {
   // This is mock resolver to test work
   @Query(() => [UserAnswerDto])
   async getUserAnswers(): Promise<readonly UserAnswerDto[]> {
-    console.log('DEBUG');
     return [];
   }
 
-  // TODO FIXME
   @Mutation(() => Boolean)
   async createUserAnswer(
     @Args({ name: 'input', type: () => UserAnswerInputParams })
     input: UserAnswerInputParams,
   ): Promise<boolean> {
-    console.log(input.requestedAt);
-    console.log(typeof input.requestedAt);
     await this.usecase.insertUserAnswer(input);
     return true;
   }
