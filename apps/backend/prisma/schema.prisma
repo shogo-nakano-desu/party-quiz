@@ -39,12 +39,15 @@ model user_answer {
 
 model session_detail {
   id          String   @id
+  number      Int
   session_id  String
   question_id String
   session     session  @relation(fields: [session_id], references: [id])
   question    question @relation(fields: [question_id], references: [id])
   started_at  DateTime @db.Timestamptz
   ended_at    DateTime @db.Timestamptz
+
+  @@unique([session_id, number])
 }
 
 model session {
