@@ -11,9 +11,14 @@
   "dictionaries": [],
   "words": [
     "codegen",
+    "DATASOURCE",
+    "datasources",
     "desu",
+    "GraphQLISODateTime",
     "nakano",
-    "shogo"
+    "nestjs",
+    "shogo",
+    "usecase"
   ],
   "ignoreWords": []
 }

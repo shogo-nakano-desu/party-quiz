@@ -48,12 +48,12 @@
       "yarn workspace backend prisma format"
     ]
   },
-  "packageManager": "yarn@3.1.1",
+  "packageManager": "yarn@3.3.1",
   "volta": {
     "node": "16.14.0"
   },
   "workspaces": [
-    "apps/*",
-    "libs/*"
+    "apps/backend",
+    "apps/web"
   ]
 }
