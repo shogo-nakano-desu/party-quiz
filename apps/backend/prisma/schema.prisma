@@ -31,8 +31,9 @@ model question {
 
 model user_answer {
   user_id      String   @id
-  question_id  String
+  session_id   String
   answer       Answer
+  // requested_at is created in client.
   requested_at DateTime @db.Timestamptz
 }
 
