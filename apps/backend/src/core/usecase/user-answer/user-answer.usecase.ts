@@ -13,7 +13,7 @@ export class UserAnswerUsecase {
 
   async insertUserAnswer(params: UserAnswerInputParams): Promise<void> {
     this.repository.save(
-      UserAnswer.reconstruct({
+      UserAnswer.create({
         userId: params.userId,
         sessionId: params.sessionId,
         answer: params.answer,
