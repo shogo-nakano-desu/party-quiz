@@ -62,6 +62,17 @@ describe('AppController (e2e)', () => {
       .expect(200);
   });
 
+  it('test result summary', async () => {
+    await await request(app.getHttpServer())
+      .post(gql)
+      .send({
+        query: `mutation {getResultSummary(input: {
+        sessionId: "ss-01GN91BR81PW78RTFTC54KZ6R1"
+      })}`,
+      })
+      .expect(200);
+  });
+
   it('test start the session detail', async () => {
     await createDataForTestSessionDetail(client);
     return request(app.getHttpServer())
