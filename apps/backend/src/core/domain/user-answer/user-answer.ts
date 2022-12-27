@@ -3,7 +3,7 @@ import { IdFactory } from '../common/id-factory';
 
 type BaseType = Omit<UserAnswer, 'constructor' | 'reconstruct' | 'create'>;
 export class UserAnswer {
-  static idPrefix = 'ua';
+  static idPrefix = 'usas';
   readonly id: string;
   readonly userId: string;
   readonly sessionId: string;

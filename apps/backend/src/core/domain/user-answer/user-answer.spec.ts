@@ -19,7 +19,7 @@ describe('user-answer', () => {
       answer: 'option_1',
       requestedAt: now,
     });
-    expect(answer.id.substring(0, 3)).toStrictEqual('ua-');
+    expect(answer.id.substring(0, 5)).toStrictEqual('usas-');
     expect(answer.userId).toStrictEqual('user-id');
     expect(answer.sessionId).toStrictEqual('session-id');
     expect(answer.answer).toStrictEqual('option_1');

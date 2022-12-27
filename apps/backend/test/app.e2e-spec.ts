@@ -63,11 +63,12 @@ describe('AppController (e2e)', () => {
   });
 
   it('test result summary', async () => {
+    await createDataForTestResultSummary(client);
     await await request(app.getHttpServer())
       .post(gql)
       .send({
         query: `mutation {getResultSummary(input: {
-        sessionId: "ss-01GN91BR81PW78RTFTC54KZ6R1"
+        sessionId: "sesn-01GN91BR81PW78RTFTC54KZ6R1"
       })}`,
       })
       .expect(200);
@@ -79,7 +80,7 @@ describe('AppController (e2e)', () => {
       .post(gql)
       .send({
         query: `mutation {startSessionDetail(input: {
-          sessionDetailId: "sd-01GN91JE0MQWSZEQQCFWNHMK12" startedAt: "2022-12-25 03:11:34.21"
+          sessionDetailId: "sesd-01GN91JE0MQWSZEQQCFWNHMK12" startedAt: "2022-12-25 03:11:34.21"
         })}`,
       })
       .expect(200);
@@ -91,7 +92,7 @@ describe('AppController (e2e)', () => {
       .post(gql)
       .send({
         query: `mutation {endSessionDetail(input: {
-          sessionDetailId: "sd-01GN91JE0MQWSZEQQCFWNHMK12" endedAt: "2022-12-25 03:11:54.51"
+          sessionDetailId: "sesd-01GN91JE0MQWSZEQQCFWNHMK12" endedAt: "2022-12-25 03:11:54.51"
         })}`,
       })
       .expect(200);
@@ -129,6 +130,31 @@ describe('AppController (e2e)', () => {
   });
 });
 
+async function createDataForTestResultSummary(
+  client: PrismaClient,
+): Promise<void> {
+  const now = new Date();
+  await client.user.createMany({
+    data: [
+      {
+        id: 'user-01GN9VQXXW4A7PVAKJ0K1SJQ8H',
+        name: 'shogo-nakano',
+        created_at: now,
+      },
+      {
+        id: 'user-01GN9VR69NMH6EGB8JCWEYW3HN',
+        name: 'john-doe',
+        created_at: now,
+      },
+      {
+        id: 'user-01GN9VRAH446E00EGEXTHBW536',
+        name: 'jane-doe',
+        created_at: now,
+      },
+    ],
+  });
+}
+
 async function createDataForTestSessionDetail(
   client: PrismaClient,
 ): Promise<void> {
@@ -136,7 +162,7 @@ async function createDataForTestSessionDetail(
   await client.question.createMany({
     data: [
       {
-        id: 'qs-01GN91E8J83HWKXHGJP59NJ7Z4',
+        id: 'qstn-01GN91E8J83HWKXHGJP59NJ7Z4',
         name: "What is Shogo's favorite food?",
         option_1: 'Strawberry',
         option_2: 'Chips',
@@ -146,7 +172,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qs-01GN91F8WJ71Y0SD1BMR28Q1JJ',
+        id: 'qstn-01GN91F8WJ71Y0SD1BMR28Q1JJ',
         name: 'How old is Shogo?',
         option_1: '19',
         option_2: '20',
@@ -156,7 +182,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qs-01GN91FDG1VWQHYFGBZV0N3H99',
+        id: 'qstn-01GN91FDG1VWQHYFGBZV0N3H99',
         name: 'Where is the capital in Japan?',
         option_1: 'Tokyo',
         option_2: 'Kyoto',
@@ -166,7 +192,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qs-01GN91FHHHDY0Y3X9BNJV0X358',
+        id: 'qstn-01GN91FHHHDY0Y3X9BNJV0X358',
         name: 'Which programming language does shogo use?',
         option_1: 'OCaml',
         option_2: 'Rust',
@@ -176,7 +202,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qs-01GN91FPN219QE2BKEXTYXGJ04',
+        id: 'qstn-01GN91FPN219QE2BKEXTYXGJ04',
         name: "When is Shogo's birthday?",
         option_1: '24th Dec',
         option_2: '18th Aug',
@@ -190,12 +216,12 @@ async function createDataForTestSessionDetail(
   await client.session.createMany({
     data: [
       {
-        id: 'ss-01GN91BR81PW78RTFTC54KZ6R1',
+        id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
         name: 'wedding-party',
         created_at: now,
       },
       {
-        id: 'ss-01GN91C8CP9GENV0A67RMM9CEX',
+        id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
         name: 'graduation-party',
         created_at: now,
       },
@@ -204,42 +230,42 @@ async function createDataForTestSessionDetail(
   await client.session_detail.createMany({
     data: [
       {
-        id: 'sd-01GN91JE0MQWSZEQQCFWNHMK12',
+        id: 'sesd-01GN91JE0MQWSZEQQCFWNHMK12',
         number: 1,
-        session_id: 'ss-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qs-01GN91E8J83HWKXHGJP59NJ7Z4',
+        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
+        question_id: 'qstn-01GN91E8J83HWKXHGJP59NJ7Z4',
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sd-01GN91JK71QTZ876P53JFT8FGR',
+        id: 'sesd-01GN91JK71QTZ876P53JFT8FGR',
         number: 2,
-        session_id: 'ss-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qs-01GN91F8WJ71Y0SD1BMR28Q1JJ',
+        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
+        question_id: 'qstn-01GN91F8WJ71Y0SD1BMR28Q1JJ',
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sd-01GN91JR0S36W7MMV1AV6D3B0F',
+        id: 'sesd-01GN91JR0S36W7MMV1AV6D3B0F',
         number: 3,
-        session_id: 'ss-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qs-01GN91FDG1VWQHYFGBZV0N3H99',
+        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
+        question_id: 'qstn-01GN91FDG1VWQHYFGBZV0N3H99',
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sd-01GN91JWEZCRKTCEM8F61EB5Q5',
+        id: 'sesd-01GN91JWEZCRKTCEM8F61EB5Q5',
         number: 4,
-        session_id: 'ss-01GN91C8CP9GENV0A67RMM9CEX',
-        question_id: 'qs-01GN91FHHHDY0Y3X9BNJV0X358',
+        session_id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
+        question_id: 'qstn-01GN91FHHHDY0Y3X9BNJV0X358',
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sd-01GN91K2H8BART98VKP2Q3FP3Z',
+        id: 'sesd-01GN91K2H8BART98VKP2Q3FP3Z',
         number: 5,
-        session_id: 'ss-01GN91C8CP9GENV0A67RMM9CEX',
-        question_id: 'qs-01GN91FPN219QE2BKEXTYXGJ04',
+        session_id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
+        question_id: 'qstn-01GN91FPN219QE2BKEXTYXGJ04',
         started_at: null,
         ended_at: null,
       },

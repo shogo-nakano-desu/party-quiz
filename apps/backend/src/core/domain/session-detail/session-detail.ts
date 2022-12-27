@@ -2,7 +2,7 @@ import { IdFactory } from '../common/id-factory';
 
 type BaseType = Omit<SessionDetail, 'reconstruct' | 'create' | 'idPrefix'>;
 export class SessionDetail {
-  static idPrefix = 'sd';
+  static idPrefix = 'sesd';
   readonly id: string;
   readonly number: number;
   readonly sessionId: string;
