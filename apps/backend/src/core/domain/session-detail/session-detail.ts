@@ -37,4 +37,11 @@ export class SessionDetail {
   ): SessionDetail {
     return new SessionDetail({ startedAt, ...before });
   }
+
+  public static updateEndedAt(
+    endedAt: Date,
+    before: SessionDetail,
+  ): SessionDetail {
+    return new SessionDetail({ endedAt, ...before });
+  }
 }
