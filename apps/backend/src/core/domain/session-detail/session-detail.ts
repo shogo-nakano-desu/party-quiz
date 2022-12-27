@@ -18,7 +18,7 @@ export class SessionDetail {
   }
 
   public static create(
-    params: Omit<BaseType, 'id' | 'started_at' | 'ended_at'>,
+    params: Omit<BaseType, 'id' | 'startedAt' | 'endedAt'>,
   ): SessionDetail {
     const id = new IdFactory().generate(this.idPrefix);
     return new SessionDetail({
