@@ -6,7 +6,7 @@ const testUrl = `${url}_test`;
 const testName = testUrl.split('/').pop();
 const baseName = testUrl.replace(testName, '');
 
-export class TestDB {
+export class TestDb {
   private readonly client: PrismaClient;
   private readonly name: string;
   private readonly url: string;
@@ -18,7 +18,7 @@ export class TestDB {
   });
 
   constructor() {
-    this.name = TestDB.createName();
+    this.name = TestDb.createName();
     this.url = baseName + this.name;
     this.client = new PrismaClient({
       datasources: {
@@ -43,7 +43,7 @@ export class TestDB {
 
   private async createDatabase() {
     try {
-      await TestDB.rootClient.$executeRawUnsafe(
+      await TestDb.rootClient.$executeRawUnsafe(
         `CREATE DATABASE ${this.name} WITH TEMPLATE ${testName};`,
       );
     } catch (error) {
@@ -56,7 +56,7 @@ export class TestDB {
 
   private async dropDatabase() {
     try {
-      await TestDB.rootClient.$executeRawUnsafe(`DROP DATABASE ${this.name};`);
+      await TestDb.rootClient.$executeRawUnsafe(`DROP DATABASE ${this.name};`);
     } catch (error) {
       if ((error as any)?.meta?.code === '3D000') {
         return;
