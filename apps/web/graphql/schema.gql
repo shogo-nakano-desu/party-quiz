@@ -19,7 +19,19 @@ type Mutation {
 }
 
 type Query {
+  getResultSummariesByUsers(sessionId: String!): [ResultSummaryByUserDto!]!
   getUserAnswers: [UserAnswerDto!]!
+}
+
+type ResultSummaryByUserDto {
+  numberOfCollectAnswers: Float!
+  numberOfQuestions: Float!
+  rank: Float!
+
+  """Calculated total time in milliseconds"""
+  totalTime: Float!
+  userId: String!
+  userName: String!
 }
 
 input StartSessionDetailInputParams {
