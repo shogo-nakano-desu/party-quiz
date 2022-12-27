@@ -9,10 +9,16 @@ scalar DateTime
 
 type Mutation {
   createUserAnswer(input: UserAnswerInputParams!): Boolean!
+  startSessionDetail(input: StartSessionDetailInputParams!): Boolean!
 }
 
 type Query {
   getUserAnswers: [UserAnswerDto!]!
+}
+
+input StartSessionDetailInputParams {
+  sessionDetailId: String!
+  startedAt: DateTime!
 }
 
 type UserAnswerDto {

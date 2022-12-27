@@ -10,6 +10,7 @@ export class UserAnswerDatasource implements UserAnswerRepository {
   public async save(userAnswer: UserAnswer): Promise<void> {
     await this.client.user_answer.create({
       data: {
+        id: userAnswer.id,
         user_id: userAnswer.userId,
         session_id: userAnswer.sessionId,
         answer: userAnswer.answer,
