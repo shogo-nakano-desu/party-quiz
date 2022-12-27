@@ -63,12 +63,24 @@ describe('AppController (e2e)', () => {
   });
 
   it('test start the session detail', async () => {
-    await createDataForTestStartSessionDetail(client);
+    await createDataForTestSessionDetail(client);
     return request(app.getHttpServer())
       .post(gql)
       .send({
         query: `mutation {startSessionDetail(input: {
           sessionDetailId: "sd-01GN91JE0MQWSZEQQCFWNHMK12" startedAt: "2022-12-25 03:11:34.21"
+        })}`,
+      })
+      .expect(200);
+  });
+
+  it('test end the session detail', async () => {
+    await createDataForTestSessionDetail(client);
+    return request(app.getHttpServer())
+      .post(gql)
+      .send({
+        query: `mutation {endSessionDetail(input: {
+          sessionDetailId: "sd-01GN91JE0MQWSZEQQCFWNHMK12" endedAt: "2022-12-25 03:11:54.51"
         })}`,
       })
       .expect(200);
@@ -106,7 +118,7 @@ describe('AppController (e2e)', () => {
   });
 });
 
-async function createDataForTestStartSessionDetail(
+async function createDataForTestSessionDetail(
   client: PrismaClient,
 ): Promise<void> {
   const now = new Date();
