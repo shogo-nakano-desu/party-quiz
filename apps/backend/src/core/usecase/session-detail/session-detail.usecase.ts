@@ -3,6 +3,7 @@ import { StartSessionDetailInputParams } from '../../../api/session-detail/start
 import { SESSION_DETAIL_REPOSITORY } from '../../../core/constants';
 import { SessionDetailRepository } from '../../../core/domain/session-detail/session-detail.repository';
 import { SessionDetail } from '../../../core/domain/session-detail/session-detail';
+import { EndSessionDetailInputParams } from '../../../api/session-detail/end-session-detail-input';
 
 @Injectable()
 export class SessionDetailUsecase {
@@ -17,6 +18,17 @@ export class SessionDetailUsecase {
     );
     const updatedSessionDetail = SessionDetail.updateStartedAt(
       params.startedAt,
+      currentSessionDetail,
+    );
+    await this.repository.update(updatedSessionDetail);
+  }
+
+  async end(params: EndSessionDetailInputParams): Promise<void> {
+    const currentSessionDetail = await this.repository.getById(
+      params.sessionDetailId,
+    );
+    const updatedSessionDetail = SessionDetail.updateEndedAt(
+      params.endedAt,
       currentSessionDetail,
     );
     await this.repository.update(updatedSessionDetail);
