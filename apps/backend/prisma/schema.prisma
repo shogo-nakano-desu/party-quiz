@@ -17,6 +17,12 @@ enum Answer {
   option_4
 }
 
+model user {
+  id         String   @id
+  name       String
+  created_at DateTime @db.Timestamptz
+}
+
 model question {
   id             String           @id
   name           String
