@@ -18,6 +18,7 @@ export class UserAnswerResolver {
     @Args({ name: 'input', type: () => UserAnswerInputParams })
     input: UserAnswerInputParams,
   ): Promise<boolean> {
+    console.log('start create answer');
     await this.usecase.insertUserAnswer(input);
     return true;
   }
