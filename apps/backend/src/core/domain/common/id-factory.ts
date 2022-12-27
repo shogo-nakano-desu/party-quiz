@@ -1,9 +1,9 @@
-import { monotonicFactory } from 'ulid';
+import { factory } from 'ulid';
 
 export class IdFactory {
   public generate(prefix: string): string {
     const now = Date.now();
-    const ulid = monotonicFactory();
+    const ulid = factory();
     return prefix + '-' + ulid(now);
   }
 }
