@@ -38,6 +38,7 @@ describe('user-answer-datasource', () => {
       number: 1,
       sessionId: 'session_id_1',
       questionId: 'question_id_1',
+      answer: 'option_1',
       startedAt: null,
       endedAt: null,
     });

@@ -19,23 +19,25 @@ type Mutation {
 }
 
 type Query {
-  getUserAnswers: [UserAnswerDto!]!
+  getResultSummariesByUsers(sessionId: String!): [ResultSummaryByUserDto!]!
+}
+
+type ResultSummaryByUserDto {
+  numberOfCollectAnswers: Float!
+  numberOfQuestions: Float!
+
+  """Calculated from totalTime and numberOfCollectAnswers"""
+  rank: Float!
+
+  """Calculated total time in milliseconds"""
+  totalTime: Float!
+  userId: String!
+  userName: String!
 }
 
 input StartSessionDetailInputParams {
   sessionDetailId: String!
   startedAt: DateTime!
-}
-
-type UserAnswerDto {
-  answer: String!
-
-  """Only web-common knows question_id. web-personal does not know it."""
-  question_id: String!
-
-  """This field is created in clients."""
-  requested_at: DateTime!
-  user_id: String!
 }
 
 input UserAnswerInputParams {

@@ -11,12 +11,14 @@ export class SessionDetailDatasource implements SessionDetailRepository {
   public async getById(id: string): Promise<SessionDetail> {
     const detail = await this.client.session_detail.findUniqueOrThrow({
       where: { id },
+      include: { question: { select: { answer: true } } },
     });
     return SessionDetail.reconstruct({
       id: detail.id,
       number: detail.number,
       sessionId: detail.session_id,
       questionId: detail.question_id,
+      answer: detail.question.answer,
       startedAt: detail.started_at,
       endedAt: detail.ended_at,
     });

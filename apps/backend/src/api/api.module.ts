@@ -5,6 +5,7 @@ import { join } from 'path';
 import { UserAnswerModule } from './user-answer/user-answer.module';
 import { CoreModule } from '../core/core.module';
 import { SessionDetailModule } from './session-detail/session-detail.module';
+import { ResultSummaryModule } from './result-summary/result-summary.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SessionDetailModule } from './session-detail/session-detail.module';
     CoreModule,
     UserAnswerModule,
     SessionDetailModule,
+    ResultSummaryModule,
   ],
 })
 export class ApiModule {}

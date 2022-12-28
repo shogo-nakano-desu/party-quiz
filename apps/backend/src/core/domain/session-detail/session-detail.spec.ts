@@ -20,7 +20,7 @@ describe('session-detail', () => {
       questionId: 'question-id',
     });
 
-    expect(detail.id.substring(0, 3)).toStrictEqual('sd-');
+    expect(detail.id.substring(0, 5)).toStrictEqual('sesd-');
     expect(detail.number).toStrictEqual(1);
     expect(detail.sessionId).toStrictEqual('session-id');
     expect(detail.questionId).toStrictEqual('question-id');

@@ -10,6 +10,7 @@
   ],
   "dictionaries": [],
   "words": [
+    "aggs",
     "codegen",
     "DATASOURCE",
     "datasources",
@@ -17,7 +18,11 @@
     "GraphQLISODateTime",
     "nakano",
     "nestjs",
+    "qstn",
+    "sesd",
+    "sesn",
     "shogo",
+    "usas",
     "usecase"
   ],
   "ignoreWords": []

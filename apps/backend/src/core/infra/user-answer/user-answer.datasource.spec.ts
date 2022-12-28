@@ -36,6 +36,7 @@ describe('user-answer-datasource', () => {
     const userAnswer = UserAnswer.reconstruct({
       id: 'id_1',
       userId: 'user_id_1',
+      userName: 'user_name_1',
       sessionId: 'session_id_1',
       answer: 'option_1',
       requestedAt: new Date('2022-11-20 12:51:10.20'),
