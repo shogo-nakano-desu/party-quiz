@@ -18,12 +18,14 @@ describe('session-detail', () => {
       number: 1,
       sessionId: 'session-id',
       questionId: 'question-id',
+      answer: 'option_1',
     });
 
     expect(detail.id.substring(0, 5)).toStrictEqual('sesd-');
     expect(detail.number).toStrictEqual(1);
     expect(detail.sessionId).toStrictEqual('session-id');
     expect(detail.questionId).toStrictEqual('question-id');
+    expect(detail.answer).toStrictEqual('option_1');
     expect(detail.startedAt).toBeNull();
     expect(detail.endedAt).toBeNull();
   });
@@ -40,6 +42,7 @@ describe('session-detail', () => {
         number: 1,
         sessionId: 'session-id',
         questionId: 'question-id',
+        answer: 'option_1',
         startedAt: after,
         endedAt: now,
       }),
@@ -58,6 +61,7 @@ describe('session-detail', () => {
         number: 1,
         sessionId: 'session-id',
         questionId: 'question-id',
+        answer: 'option_1',
         startedAt: now,
         endedAt: after,
       }),
@@ -71,6 +75,7 @@ function generateSessionDetail(now: Date): SessionDetail {
     number: 1,
     sessionId: 'session-id',
     questionId: 'question-id',
+    answer: 'option_1',
     startedAt: now,
     endedAt: now,
   });
