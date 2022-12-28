@@ -2,7 +2,9 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ResultSummaryByUserDto {
-  @Field(() => Number)
+  @Field(() => Number, {
+    description: 'Calculated from totalTime and numberOfCollectAnswers',
+  })
   readonly rank: number;
   @Field(() => String)
   readonly userId: string;
