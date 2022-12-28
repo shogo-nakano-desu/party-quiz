@@ -3,38 +3,20 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PrismaClient } from '@prisma/client';
-import { TestDb } from '../src/test-utils/test-db';
-import { DATASOURCE_CLIENT } from '../src/core/constants';
 import { ResultSummaryByUserDto } from 'src/api/result-summary/result-summary-by-user.dto';
+import { DatasourceClient } from '../src/core/infra/datasource.client';
+import { IdFactory } from '../src/core/domain/common/id-factory';
+import { queueScheduler } from 'rxjs';
 
 const gql = '/graphql';
 
-// TODO remove comments when mutation implementation is done and can test getAllUserAnswers
-// const cats: UserAnswerDto[] = [
-//   {
-//     user_id: 'user_id_1',
-//     question_id: 'question_id_1',
-//     answer: 'option_1',
-//     requested_at: new Date('2022-12-25 03:00:12.10'),
-//   },
-//   {
-//     user_id: 'user_id_2',
-//     question_id: 'question_id_1',
-//     answer: 'option_2',
-//     requested_at: new Date('2022-12-25 03:00:17.24'),
-//   },
-//   {
-//     user_id: 'user_id_1',
-//     question_id: 'question_id_1',
-//     answer: 'option_3',
-//     requested_at: new Date('2022-12-25 03:00:21.33'),
-//   },
-// ];
-
+const userIds: string[] = Array.from({ length: 10 }, (_, i) => i).map((_) =>
+  IdFactory.generate('user'),
+);
 const resultSummariesByUsers: ResultSummaryByUserDto[] = [
   {
     rank: 1,
-    userId: 'user-01GN9VRAH446E00EGEXTHBW536',
+    userId: userIds[2],
     userName: 'jane-doe',
     totalTime: 2000,
     numberOfCollectAnswers: 2,
@@ -42,15 +24,15 @@ const resultSummariesByUsers: ResultSummaryByUserDto[] = [
   },
   {
     rank: 2,
-    userId: 'user-01GN9VR69NMH6EGB8JCWEYW3HN',
+    userId: userIds[1],
     userName: 'john-doe',
-    totalTime: 32000,
+    totalTime: 29000,
     numberOfCollectAnswers: 1,
     numberOfQuestions: 3,
   },
   {
     rank: 3,
-    userId: 'user-01GN9VQXXW4A7PVAKJ0K1SJQ8H',
+    userId: userIds[0],
     userName: 'shogo-nakano',
     totalTime: 34000,
     numberOfCollectAnswers: 1,
@@ -60,50 +42,36 @@ const resultSummariesByUsers: ResultSummaryByUserDto[] = [
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let testDb: TestDb;
   let client: PrismaClient;
 
-  beforeEach(async () => {
-    testDb = new TestDb();
-    await testDb.setup();
-    client = testDb.getClient();
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-      providers: [
-        {
-          provide: DATASOURCE_CLIENT,
-          useValue: client,
-        },
-      ],
     }).compile();
 
-    app = module.createNestApplication();
+    app = moduleFixture.createNestApplication();
+    client = DatasourceClient.getInstance();
     await app.init();
   });
 
-  it('test get request', async () => {
-    await request(app.getHttpServer())
-      .post(gql)
-      .send({
-        query: '{getUserAnswers {user_id question_id answer requested_at}}',
-      })
-      .expect(200);
+  afterAll(async () => {
+    await app.close();
   });
 
   it('test get resultSummariesByUsers', async () => {
-    await createDataForTestResultSummary(client);
+    const sessionId = IdFactory.generate('sesn');
+    await createDataForTestResultSummary(client, sessionId, userIds);
     await await request(app.getHttpServer())
       .post(gql)
       .send({
         query: `{
-          getResultSummariesByUsers(sessionId: "sesn-01GN91BR81PW78RTFTC54KZ6R1") {
+          getResultSummariesByUsers(sessionId: "${sessionId}") {
             rank userId userName totalTime numberOfCollectAnswers numberOfQuestions
           }
         }`,
       })
       .expect(200)
       .expect((res) => {
-        console.log(res.body.data.getResultSummariesByUsers);
         expect(res.body.data.getResultSummariesByUsers).toStrictEqual(
           resultSummariesByUsers,
         );
@@ -111,79 +79,103 @@ describe('AppController (e2e)', () => {
   });
 
   it('test start the session detail', async () => {
-    await createDataForTestSessionDetail(client);
+    const sessionId1 = IdFactory.generate('sesd');
+    const sessionId2 = IdFactory.generate('sesd');
+    await createDataForTestSessionDetail(client, sessionId1, sessionId2);
     return request(app.getHttpServer())
       .post(gql)
       .send({
         query: `mutation {startSessionDetail(input: {
-          sessionDetailId: "sesd-01GN91JE0MQWSZEQQCFWNHMK12" startedAt: "2022-12-25 03:11:34.21"
+          sessionDetailId: "${sessionId1}" startedAt: "2022-12-25 03:11:34.21"
         })}`,
       })
       .expect(200);
   });
 
   it('test end the session detail', async () => {
-    await createDataForTestSessionDetail(client);
+    const sessionId1 = IdFactory.generate('sesd');
+    const sessionId2 = IdFactory.generate('sesd');
+    await createDataForTestSessionDetail(client, sessionId1, sessionId2);
     return request(app.getHttpServer())
       .post(gql)
       .send({
         query: `mutation {endSessionDetail(input: {
-          sessionDetailId: "sesd-01GN91JE0MQWSZEQQCFWNHMK12" endedAt: "2022-12-25 03:11:54.51"
+          sessionDetailId: "${sessionId1}" endedAt: "2022-12-25 03:11:54.51"
         })}`,
       })
       .expect(200);
   });
 
   it('should create a new user_answer and have it added to the array', async () => {
+    const userId = IdFactory.generate('user');
+    const sessionId = IdFactory.generate('sesn');
+    await createDataForTestCreateUserAnswer(client, userId, sessionId);
     return request(app.getHttpServer())
       .post(gql)
       .send({
         query: `mutation {createUserAnswer(input: { 
-              userId: "user_id_3" answer: "option_4" sessionId: "session_1" requestedAt: "2022-12-25 03:00:22.01" 
+              userId: "${userId}" answer: "option_4" sessionId: "${sessionId}" requestedAt: "2022-12-25 03:00:22.01" 
             })}`,
       })
       .expect(200);
-
-    //// chain another request to see our original one works as expected
-    // .then(() =>
-    //   request(app.getHttpServer())
-    //     .post(gql)
-    //     .send({ query: '{get {user_id question_id answer requested_at}}' })
-    //     .expect(200)
-    //     .expect((res) => {
-    //       expect(res.body.data.getUserAnswers).toEqual(
-    //         cats.concat([
-    //           {
-    //             user_id: 'user_id_3',
-    //             question_id: 'question_id_1',
-    //             answer: 'option_4',
-    //             requested_at: new Date('2022-12-25 03:00:22.05'),
-    //           },
-    //         ]),
-    //       );
-    //     }),
-    // )
   });
 });
 
-async function createDataForTestResultSummary(
+async function createDataForTestCreateUserAnswer(
   client: PrismaClient,
+  userId: string,
+  sessionId: string,
 ): Promise<void> {
   const now = new Date();
+  await client.user.create({
+    data: {
+      id: userId,
+      name: 'shogo',
+      created_at: now,
+    },
+  });
+  await client.session.create({
+    data: {
+      id: sessionId,
+      name: 'name',
+      created_at: now,
+    },
+  });
+}
+
+async function createDataForTestResultSummary(
+  client: PrismaClient,
+  sessionId: string,
+  userIds: string[],
+): Promise<void> {
+  const now = new Date();
+  const sessionId2 = IdFactory.generate('sesn');
+  const questionIds: string[] = Array.from({ length: 10 }, (_, i) => i).map(
+    (_) => IdFactory.generate('qstn'),
+  );
+  const sessionDetailIds: string[] = Array.from(
+    { length: 10 },
+    (_, i) => i,
+  ).map((_) => IdFactory.generate('sesd'));
+
+  const userAnswerIds: string[] = Array.from({ length: 10 }, (_, i) => i).map(
+    (_) => IdFactory.generate('usas'),
+  );
+
   await client.user.createMany({
     data: [
       {
-        id: 'user-01GN9VQXXW4A7PVAKJ0K1SJQ8H',
+        id: userIds[0],
         name: 'shogo-nakano',
         created_at: now,
       },
       {
-        id: 'user-01GN9VR69NMH6EGB8JCWEYW3HN',
+        id: userIds[1],
         name: 'john-doe',
         created_at: now,
       },
       {
-        id: 'user-01GN9VRAH446E00EGEXTHBW536',
+        id: userIds[2],
         name: 'jane-doe',
         created_at: now,
       },
@@ -192,7 +184,7 @@ async function createDataForTestResultSummary(
   await client.question.createMany({
     data: [
       {
-        id: 'qstn-01GN91E8J83HWKXHGJP59NJ7Z4',
+        id: questionIds[0],
         name: "What is Shogo's favorite food?",
         option_1: 'Strawberry',
         option_2: 'Chips',
@@ -202,7 +194,7 @@ async function createDataForTestResultSummary(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91F8WJ71Y0SD1BMR28Q1JJ',
+        id: questionIds[1],
         name: 'How old is Shogo?',
         option_1: '19',
         option_2: '20',
@@ -212,7 +204,7 @@ async function createDataForTestResultSummary(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91FDG1VWQHYFGBZV0N3H99',
+        id: questionIds[2],
         name: 'Where is the capital in Japan?',
         option_1: 'Tokyo',
         option_2: 'Kyoto',
@@ -222,7 +214,7 @@ async function createDataForTestResultSummary(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91FHHHDY0Y3X9BNJV0X358',
+        id: questionIds[3],
         name: 'Which programming language does shogo use?',
         option_1: 'OCaml',
         option_2: 'Rust',
@@ -232,7 +224,7 @@ async function createDataForTestResultSummary(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91FPN219QE2BKEXTYXGJ04',
+        id: questionIds[4],
         name: "When is Shogo's birthday?",
         option_1: '24th Dec',
         option_2: '18th Aug',
@@ -246,12 +238,12 @@ async function createDataForTestResultSummary(
   await client.session.createMany({
     data: [
       {
-        id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
+        id: sessionId,
         name: 'wedding-party',
         created_at: now,
       },
       {
-        id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
+        id: sessionId2,
         name: 'graduation-party',
         created_at: now,
       },
@@ -260,44 +252,104 @@ async function createDataForTestResultSummary(
   await client.session_detail.createMany({
     data: [
       {
-        id: 'sesd-01GN91JE0MQWSZEQQCFWNHMK12',
+        id: sessionDetailIds[0],
         number: 1,
-        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qstn-01GN91E8J83HWKXHGJP59NJ7Z4',
+        session_id: sessionId,
+        question_id: questionIds[0],
         started_at: new Date('2022-12-27 15:10:00'),
         ended_at: new Date('2022-12-27 15:10:30'),
       },
       {
-        id: 'sesd-01GN91JK71QTZ876P53JFT8FGR',
+        id: sessionDetailIds[1],
         number: 2,
-        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qstn-01GN91F8WJ71Y0SD1BMR28Q1JJ',
+        session_id: sessionId,
+        question_id: questionIds[1],
         started_at: new Date('2022-12-27 15:10:31'),
         ended_at: new Date('2022-12-27 15:11:01'),
       },
       {
-        id: 'sesd-01GN91JR0S36W7MMV1AV6D3B0F',
+        id: sessionDetailIds[2],
         number: 3,
-        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qstn-01GN91FDG1VWQHYFGBZV0N3H99',
+        session_id: sessionId,
+        question_id: questionIds[2],
         started_at: new Date('2022-12-27 15:11:02'),
         ended_at: new Date('2022-12-27 15:11:32'),
       },
       {
-        id: 'sesd-01GN91JWEZCRKTCEM8F61EB5Q5',
+        id: sessionDetailIds[3],
         number: 4,
-        session_id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
-        question_id: 'qstn-01GN91FHHHDY0Y3X9BNJV0X358',
+        session_id: sessionId2,
+        question_id: questionIds[3],
         started_at: new Date('2022-12-27 15:11:33'),
         ended_at: new Date('2022-12-27 15:12:03'),
       },
       {
-        id: 'sesd-01GN91K2H8BART98VKP2Q3FP3Z',
+        id: sessionDetailIds[4],
         number: 5,
-        session_id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
-        question_id: 'qstn-01GN91FPN219QE2BKEXTYXGJ04',
+        session_id: sessionId2,
+        question_id: questionIds[4],
         started_at: new Date('2022-12-27 15:12:04'),
         ended_at: new Date('2022-12-27 15:12:34'),
+      },
+    ],
+  });
+  await client.user_answer.createMany({
+    data: [
+      {
+        id: userAnswerIds[0],
+        user_id: userIds[0],
+        session_id: sessionId,
+        answer: 'option_4',
+        requested_at: new Date('2022-12-27 15:10:02'),
+      },
+      {
+        id: userAnswerIds[1],
+        user_id: userIds[0],
+        session_id: sessionId,
+        answer: 'option_2',
+        requested_at: new Date('2022-12-27 15:10:05'),
+      },
+      {
+        id: userAnswerIds[2],
+        user_id: userIds[1],
+        session_id: sessionId,
+        answer: 'option_3',
+        requested_at: new Date('2022-12-27 15:10:32'),
+      },
+      {
+        id: userAnswerIds[3],
+        user_id: userIds[2],
+        session_id: sessionId,
+        answer: 'option_3',
+        requested_at: new Date('2022-12-27 15:10:01'),
+      },
+      {
+        id: userAnswerIds[4],
+        user_id: userIds[0],
+        session_id: sessionId,
+        answer: 'option_1',
+        requested_at: new Date('2022-12-27 15:11:31'),
+      },
+      {
+        id: userAnswerIds[5],
+        user_id: userIds[2],
+        session_id: sessionId,
+        answer: 'option_1',
+        requested_at: new Date('2022-12-27 15:11:03'),
+      },
+      {
+        id: userAnswerIds[6],
+        user_id: userIds[1],
+        session_id: sessionId,
+        answer: 'option_3',
+        requested_at: new Date('2022-12-27 15:11:00'),
+      },
+      {
+        id: userAnswerIds[7],
+        user_id: userIds[1],
+        session_id: sessionId,
+        answer: 'option_3',
+        requested_at: new Date('2022-12-27 15:10:34'),
       },
     ],
   });
@@ -305,12 +357,20 @@ async function createDataForTestResultSummary(
 
 async function createDataForTestSessionDetail(
   client: PrismaClient,
+  sessionId1: string,
+  sessionId2: string,
 ): Promise<void> {
   const now = new Date();
+  const questionIds: string[] = Array.from({ length: 5 }, (_, i) => i).map(
+    (_) => IdFactory.generate('qstn'),
+  );
+  const sessionDetailIds: string[] = Array.from({ length: 5 }, (_, i) => i).map(
+    (_) => IdFactory.generate('sesd'),
+  );
   await client.question.createMany({
     data: [
       {
-        id: 'qstn-01GN91E8J83HWKXHGJP59NJ7Z4',
+        id: questionIds[0],
         name: "What is Shogo's favorite food?",
         option_1: 'Strawberry',
         option_2: 'Chips',
@@ -320,7 +380,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91F8WJ71Y0SD1BMR28Q1JJ',
+        id: questionIds[1],
         name: 'How old is Shogo?',
         option_1: '19',
         option_2: '20',
@@ -330,7 +390,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91FDG1VWQHYFGBZV0N3H99',
+        id: questionIds[2],
         name: 'Where is the capital in Japan?',
         option_1: 'Tokyo',
         option_2: 'Kyoto',
@@ -340,7 +400,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91FHHHDY0Y3X9BNJV0X358',
+        id: questionIds[3],
         name: 'Which programming language does shogo use?',
         option_1: 'OCaml',
         option_2: 'Rust',
@@ -350,7 +410,7 @@ async function createDataForTestSessionDetail(
         created_at: now,
       },
       {
-        id: 'qstn-01GN91FPN219QE2BKEXTYXGJ04',
+        id: questionIds[4],
         name: "When is Shogo's birthday?",
         option_1: '24th Dec',
         option_2: '18th Aug',
@@ -364,12 +424,12 @@ async function createDataForTestSessionDetail(
   await client.session.createMany({
     data: [
       {
-        id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
+        id: sessionId1,
         name: 'wedding-party',
         created_at: now,
       },
       {
-        id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
+        id: sessionId2,
         name: 'graduation-party',
         created_at: now,
       },
@@ -378,42 +438,42 @@ async function createDataForTestSessionDetail(
   await client.session_detail.createMany({
     data: [
       {
-        id: 'sesd-01GN91JE0MQWSZEQQCFWNHMK12',
+        id: sessionDetailIds[0],
         number: 1,
-        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qstn-01GN91E8J83HWKXHGJP59NJ7Z4',
+        session_id: sessionId1,
+        question_id: questionIds[0],
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sesd-01GN91JK71QTZ876P53JFT8FGR',
+        id: sessionDetailIds[1],
         number: 2,
-        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qstn-01GN91F8WJ71Y0SD1BMR28Q1JJ',
+        session_id: sessionId1,
+        question_id: questionIds[1],
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sesd-01GN91JR0S36W7MMV1AV6D3B0F',
+        id: sessionDetailIds[2],
         number: 3,
-        session_id: 'sesn-01GN91BR81PW78RTFTC54KZ6R1',
-        question_id: 'qstn-01GN91FDG1VWQHYFGBZV0N3H99',
+        session_id: sessionId1,
+        question_id: questionIds[2],
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sesd-01GN91JWEZCRKTCEM8F61EB5Q5',
+        id: sessionDetailIds[3],
         number: 4,
-        session_id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
-        question_id: 'qstn-01GN91FHHHDY0Y3X9BNJV0X358',
+        session_id: sessionId2,
+        question_id: questionIds[3],
         started_at: null,
         ended_at: null,
       },
       {
-        id: 'sesd-01GN91K2H8BART98VKP2Q3FP3Z',
+        id: sessionDetailIds[4],
         number: 5,
-        session_id: 'sesn-01GN91C8CP9GENV0A67RMM9CEX',
-        question_id: 'qstn-01GN91FPN219QE2BKEXTYXGJ04',
+        session_id: sessionId2,
+        question_id: questionIds[4],
         started_at: null,
         ended_at: null,
       },
