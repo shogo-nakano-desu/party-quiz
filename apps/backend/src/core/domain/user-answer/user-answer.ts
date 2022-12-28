@@ -6,6 +6,7 @@ export class UserAnswer {
   static idPrefix = 'usas';
   readonly id: string;
   readonly userId: string;
+  readonly userName: string;
   readonly sessionId: string;
   readonly answer: Answer;
   readonly requestedAt: Date;
@@ -18,10 +19,11 @@ export class UserAnswer {
   }
 
   public static create(init: Omit<BaseType, 'id' | 'idPrefix'>): UserAnswer {
-    const id = new IdFactory().generate(this.idPrefix);
+    const id = IdFactory.generate(this.idPrefix);
     return new UserAnswer({
       id,
       userId: init.userId,
+      userName: init.userName,
       sessionId: init.sessionId,
       answer: init.answer,
       requestedAt: init.requestedAt,
