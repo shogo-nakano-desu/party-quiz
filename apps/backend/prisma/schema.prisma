@@ -18,9 +18,10 @@ enum Answer {
 }
 
 model user {
-  id         String   @id
-  name       String
-  created_at DateTime @db.Timestamptz
+  id          String        @id
+  name        String
+  created_at  DateTime      @db.Timestamptz
+  user_answer user_answer[]
 }
 
 model question {
@@ -38,6 +39,7 @@ model question {
 model user_answer {
   id           String   @id
   user_id      String
+  user         user     @relation(fields: [user_id], references: [id])
   session_id   String
   answer       Answer
   // requested_at is created in client.
