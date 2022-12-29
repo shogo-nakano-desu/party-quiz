@@ -1,0 +1,14 @@
+{
+  "name": "tools",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "qr-gen": "node qr-gen.js"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "qrcode": "^1.5.1"
+  }
+}
