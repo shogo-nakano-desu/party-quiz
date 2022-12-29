@@ -18,6 +18,7 @@
     "GraphQLISODateTime",
     "nakano",
     "nestjs",
+    "qrcode",
     "qstn",
     "sesd",
     "sesn",
