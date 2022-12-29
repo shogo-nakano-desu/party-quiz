@@ -20,6 +20,19 @@ type Mutation {
 
 type Query {
   getResultSummariesByUsers(sessionId: String!): [ResultSummaryByUserDto!]!
+  listQuestions(sessionId: String!): [QuestionDto!]!
+}
+
+type QuestionDto {
+  answer: String!
+  name: String!
+  number: Float!
+  option_1: String!
+  option_2: String!
+  option_3: String!
+  option_4: String!
+  questionId: String!
+  sessionDetailId: String!
 }
 
 type ResultSummaryByUserDto {
