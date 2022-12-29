@@ -6,6 +6,7 @@ import { UserAnswerModule } from './user-answer/user-answer.module';
 import { CoreModule } from '../core/core.module';
 import { SessionDetailModule } from './session-detail/session-detail.module';
 import { ResultSummaryModule } from './result-summary/result-summary.module';
+import { QuestionModule } from './question/question.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ResultSummaryModule } from './result-summary/result-summary.module';
     UserAnswerModule,
     SessionDetailModule,
     ResultSummaryModule,
+    QuestionModule,
   ],
 })
 export class ApiModule {}
