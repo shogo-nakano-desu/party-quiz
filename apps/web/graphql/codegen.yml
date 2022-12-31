@@ -1,10 +1,11 @@
-schema: graphql/schema.graphql
+schema: graphql/schema.gql
 documents: src/**/*.graphql
 generates:
   graphql/generated.ts:
     plugins:
       - 'typescript'
       - 'typescript-operations'
+      - typed-document-node
 config:
   scalars:
     # ref https://github.com/dotansimha/graphql-code-generator/issues/153
