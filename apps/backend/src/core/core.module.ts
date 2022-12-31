@@ -3,6 +3,7 @@ import { UserAnswerUsecase } from './usecase/user-answer/user-answer.usecase';
 import {
   DATASOURCE_CLIENT,
   QUERY_SERVICE_CLIENT,
+  QUESTION_QUERY_SERVICE,
   RESULT_SUMMARY_QUERY_SERVICE,
   SESSION_DETAIL_REPOSITORY,
   USER_ANSWER_REPOSITORY,
@@ -13,12 +14,14 @@ import { SessionDetailUsecase } from './usecase/session-detail/session-detail.us
 import { SessionDetailDatasource } from './infra/session-detail/session-detail.datasource';
 import { ResultSummaryQueryDatasource } from './infra/result-summary/result-summary-query.datasource';
 import { QueryServiceClient } from './infra/query-service';
+import { QuestionQueryDatasource } from './infra/question/question-query.datasource';
 
 @Module({
   imports: [],
   providers: [
     UserAnswerUsecase,
     SessionDetailUsecase,
+    { provide: QUESTION_QUERY_SERVICE, useClass: QuestionQueryDatasource },
     {
       provide: RESULT_SUMMARY_QUERY_SERVICE,
       useClass: ResultSummaryQueryDatasource,
@@ -34,6 +37,10 @@ import { QueryServiceClient } from './infra/query-service';
   exports: [
     UserAnswerUsecase,
     SessionDetailUsecase,
+    {
+      provide: QUESTION_QUERY_SERVICE,
+      useClass: QuestionQueryDatasource,
+    },
     {
       provide: RESULT_SUMMARY_QUERY_SERVICE,
       useClass: ResultSummaryQueryDatasource,
