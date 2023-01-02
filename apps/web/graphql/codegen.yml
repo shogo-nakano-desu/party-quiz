@@ -5,7 +5,8 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - typed-document-node
+      - 'typescript-urql'
+      - 'urql-introspection'
 config:
   scalars:
     # ref https://github.com/dotansimha/graphql-code-generator/issues/153
