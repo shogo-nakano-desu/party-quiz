@@ -1,20 +1,18 @@
 import { useRouter } from 'next/router'
-import { QuestionPageDocument } from '../../../../graphql';
-import { QUESTION_PAGE_QUERY } from './question';
-import { graphql } from 'graphql';
-
-// const listQuestionsDoc = graphql(
-//   query QuestionPage
-// )
+import { useQuestionPageQuery } from '../../../../graphql';
 
 const Question = () => {
   const router = useRouter()
   const { sessionId } = router.query
+  const [result] = useQuestionPageQuery({variables:{sessionId: `${sessionId}`}})
+  const { data, fetching, error } = result;
 
+  if (fetching) return <p>Loading...</p>;
+  if (error) return <p>Oh no... ${error.message}</p>
 
   return (<>
   <p>Session: {sessionId}</p>
-  {/* <div>{data?.listQuestions.map((item)=>item.sessionDetailId)}</div> */}
+  <div>{data?.listQuestions.map((item)=>item.sessionDetailId)}</div>
   </>
   )
 }

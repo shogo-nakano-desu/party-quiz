@@ -16,7 +16,6 @@ export class QuestionResolver {
     @Args({ name: 'sessionId', type: () => ID })
     sessionId: string,
   ): Promise<QuestionDto[]> {
-    console.log(sessionId);
     return await this.queryService.listQuestions(sessionId);
   }
 }

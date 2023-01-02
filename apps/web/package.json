@@ -6,9 +6,11 @@
     "build": "next build",
     "build:gql": "graphql-codegen --config graphql/codegen.yml",
     "start": "next start",
+    "clean": "rm -rf ./node_modules && rm -rf ./dist && rm -rf ./.next",
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^2.0.1",
     "@next/font": "13.0.7",
     "@types/node": "18.11.17",
     "@types/react": "18.0.26",
@@ -19,6 +21,7 @@
     "graphql-tag": "^2.12.6",
     "lodah": "^0.0.1-security",
     "next": "13.0.7",
+    "next-http-proxy-middleware": "^1.2.5",
     "next-urql": "^4.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

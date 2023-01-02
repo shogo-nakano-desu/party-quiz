@@ -1,8 +1,7 @@
 import { PropsWithChildren } from 'react';
-import { createClient, defaultExchanges, errorExchange, Provider } from 'urql';
+import { createClient, Provider } from 'urql';
 
-const baseUrl = process.env.NODE_ENV === 'test' ? process.env.API_ENDPOINT : '';
-
+const baseUrl = (process.env.NODE_ENV === 'test'|| process.env.NODE_ENV ==='development' )? process.env.NEXT_PUBLIC_API_ENDPOINT : '';
 // https://formidable.com/open-source/urql/docs/basics/react-preact/#providing-the-client
 const client = createClient({
   url: `${baseUrl}/graphql`,
