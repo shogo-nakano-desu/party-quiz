@@ -1,3 +1,4 @@
+import { addSeconds } from 'date-fns';
 import { Answer } from '../../../models/types';
 import { IdFactory } from '../common/id-factory';
 
@@ -34,11 +35,15 @@ export class SessionDetail {
     });
   }
 
-  public static updateStartedAt(
+  public static updateStartedAndEndedAt(
     startedAt: Date,
     before: SessionDetail,
   ): SessionDetail {
-    return new SessionDetail({ ...before, startedAt });
+    return new SessionDetail({
+      ...before,
+      startedAt,
+      endedAt: addSeconds(startedAt, 30),
+    });
   }
 
   public static updateEndedAt(

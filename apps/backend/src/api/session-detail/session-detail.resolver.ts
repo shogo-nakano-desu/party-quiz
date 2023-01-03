@@ -14,6 +14,11 @@ export class SessionDetailResolver {
     input: StartSessionDetailInputParams,
   ): Promise<boolean> {
     try {
+      console.log(
+        `startSessionDetail 
+        sessionDetailId: ${input.sessionDetailId}
+        startedAt: ${input.startedAt}`,
+      );
       await this.usecase.start(input);
     } catch (e) {
       new InternalServerErrorException(e);
@@ -27,6 +32,9 @@ export class SessionDetailResolver {
     input: EndSessionDetailInputParams,
   ): Promise<boolean> {
     try {
+      console.log(`endSessionDetail
+      sessionDetailId: ${input.sessionDetailId}
+      endedAt: ${input.endedAt}`);
       await this.usecase.end(input);
     } catch (e) {
       new InternalServerErrorException(e);
