@@ -1,0 +1,7 @@
+mutation startSessionDetail($input: StartSessionDetailInputParams!) {
+  startSessionDetail(input: $input)
+}
+
+mutation endSessionDetail($input: EndSessionDetailInputParams!) {
+  endSessionDetail(input: $input)
+}
