@@ -10,7 +10,8 @@
   },
   "scripts": {
     "lint": "eslint --ignore-path .gitignore --fix './apps/**/*.{ts,tsx}' && prettier --ignore-path .gitignore  --write './apps/**/*.{ts,tsx}'",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "clean": "yarn workspace backend clean && yarn workspace web clean && rm -rf ./node_modules && rm yarn.lock"
   },
   "devDependencies": {
     "cspell": "5.21.2",
@@ -53,8 +54,7 @@
     "node": "16.14.0"
   },
   "workspaces": [
-    "apps/backend",
-    "apps/web",
-    "tools/qr-gen"
+    "apps/*",
+    "tools/*"
   ]
 }

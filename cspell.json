@@ -18,11 +18,13 @@
     "GraphQLISODateTime",
     "nakano",
     "nestjs",
+    "nextjs",
     "qrcode",
     "qstn",
     "sesd",
     "sesn",
     "shogo",
+    "Urql",
     "usas",
     "usecase"
   ],

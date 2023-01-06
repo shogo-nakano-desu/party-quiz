@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Query, Resolver } from '@nestjs/graphql';
 import { QuestionDto } from './question.dto';
 import { QUESTION_QUERY_SERVICE } from '../../core/constants';
 import { QuestionQueryService } from '../../core/usecase/question/query/question-query-service';
@@ -13,10 +13,9 @@ export class QuestionResolver {
 
   @Query(() => [QuestionDto])
   async listQuestions(
-    @Args({ name: 'sessionId', type: () => String })
+    @Args({ name: 'sessionId', type: () => ID })
     sessionId: string,
   ): Promise<QuestionDto[]> {
-    console.log(sessionId);
     return await this.queryService.listQuestions(sessionId);
   }
 }

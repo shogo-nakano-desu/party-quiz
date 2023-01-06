@@ -1,4 +1,4 @@
-import { Resolver, Args, Query } from '@nestjs/graphql';
+import { Resolver, Args, Query, ID } from '@nestjs/graphql';
 import { ResultSummaryByUserDto } from './result-summary-by-user.dto';
 import { ResultSummaryQueryService } from '../../core/usecase/result-summary/query/result-summary-query-service';
 import { Inject } from '@nestjs/common';
@@ -13,7 +13,7 @@ export class ResultSummaryResolver {
 
   @Query(() => [ResultSummaryByUserDto])
   async getResultSummariesByUsers(
-    @Args({ name: 'sessionId', type: () => String })
+    @Args({ name: 'sessionId', type: () => ID })
     sessionId: string,
   ): Promise<ResultSummaryByUserDto[]> {
     return await this.queryService.getResultSummaries(sessionId);

@@ -1,0 +1,17 @@
+fragment QuestionPage_questions on QuestionDto {
+  sessionDetailId
+  questionId
+  number
+  name
+  option_1
+  option_2
+  option_3
+  option_4
+  answer
+}
+
+query QuestionPage($sessionId: ID!) {
+  listQuestions(sessionId: $sessionId) {
+    ...QuestionPage_questions
+  }
+}

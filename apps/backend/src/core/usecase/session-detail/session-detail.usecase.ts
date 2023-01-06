@@ -16,9 +16,14 @@ export class SessionDetailUsecase {
     const currentSessionDetail = await this.repository.getById(
       params.sessionDetailId,
     );
-    const updatedSessionDetail = SessionDetail.updateStartedAt(
+    const updatedSessionDetail = SessionDetail.updateStartedAndEndedAt(
       params.startedAt,
       currentSessionDetail,
+    );
+    console.log(
+      `updatedStartedAt: ${updatedSessionDetail.id} 
+      startedAt: ${updatedSessionDetail.startedAt} 
+      endedAt: ${updatedSessionDetail.endedAt}`,
     );
     await this.repository.update(updatedSessionDetail);
   }
@@ -30,6 +35,11 @@ export class SessionDetailUsecase {
     const updatedSessionDetail = SessionDetail.updateEndedAt(
       params.endedAt,
       currentSessionDetail,
+    );
+    console.log(
+      `updatedEndedAt: ${updatedSessionDetail.id} 
+      startedAt: ${updatedSessionDetail.startedAt} 
+      endedAt: ${updatedSessionDetail.endedAt}`,
     );
     await this.repository.update(updatedSessionDetail);
   }

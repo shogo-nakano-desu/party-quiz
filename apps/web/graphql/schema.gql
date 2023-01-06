@@ -19,8 +19,8 @@ type Mutation {
 }
 
 type Query {
-  getResultSummariesByUsers(sessionId: String!): [ResultSummaryByUserDto!]!
-  listQuestions(sessionId: String!): [QuestionDto!]!
+  getResultSummariesByUsers(sessionId: ID!): [ResultSummaryByUserDto!]!
+  listQuestions(sessionId: ID!): [QuestionDto!]!
 }
 
 type QuestionDto {
