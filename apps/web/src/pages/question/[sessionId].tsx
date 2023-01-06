@@ -16,7 +16,7 @@ function Session() {
     if (data){
       // sort ascending order by number
       const questions = data.listQuestions.sort((a,b) => a.number - b.number);
-      console.log(questions)
+      if (questions.length > 0) questions.push({...questions[0], name: 'end'});
       const now = new Date();
       questions.forEach((q, i) => {
         setTimeout(()=> {
@@ -32,7 +32,7 @@ function Session() {
   if (fetching) return <p>Loading...</p>;
   if (error) return <p>Oh no... ${error.message}</p>
   if (!question) return <p>No question</p>
-    
+  if(question.name === "end") return <p>End</p>
     
       return (<>
             <h1>{question.name}</h1>
