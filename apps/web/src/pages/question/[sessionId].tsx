@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { QuestionDto, useEndSessionDetailMutation, useQuestionPageQuery, useStartSessionDetailMutation } from '../../../../graphql';
+import { QuestionDto, useEndSessionDetailMutation, useQuestionPageQuery, useStartSessionDetailMutation } from '../../../graphql';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { addMilliseconds, addSeconds } from 'date-fns';
@@ -10,7 +10,7 @@ function Session() {
   const [{ data, fetching, error }] = useQuestionPageQuery({variables:{sessionId: `${sessionId}`}})
   const [question, setQuestion] = useState<QuestionDto>();
   const [_, startSessionDetail] = useStartSessionDetailMutation();
-  // const [isStarted, setIsStarted] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
 
   useEffect(()=>{
     if (data){
