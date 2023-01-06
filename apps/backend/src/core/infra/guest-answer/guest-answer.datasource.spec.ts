@@ -1,14 +1,14 @@
 import { TestingModule, Test } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
-import { DATASOURCE_CLIENT } from '../../../core/constants';
+import { DATASOURCE_CLIENT } from '../../constants';
 import { TestDb } from '../../../test-utils/test-db';
-import { UserAnswerDatasource } from './user-answer.datasource';
-import { UserAnswer } from '../../../core/domain/user-answer/user-answer';
+import { GuestAnswerDatasource } from './guest-answer.datasource';
+import { GuestAnswer } from '../../domain/guest-answer/guest-answer';
 
-describe('user-answer-datasource', () => {
+describe('guest-answer-datasource', () => {
   let testDb: TestDb;
   let client: PrismaClient;
-  let datasource: UserAnswerDatasource;
+  let datasource: GuestAnswerDatasource;
 
   beforeEach(async () => {
     testDb = new TestDb();
@@ -16,7 +16,7 @@ describe('user-answer-datasource', () => {
     client = testDb.getClient();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserAnswerDatasource,
+        GuestAnswerDatasource,
         {
           provide: DATASOURCE_CLIENT,
           useValue: client,
@@ -24,7 +24,7 @@ describe('user-answer-datasource', () => {
       ],
     }).compile();
 
-    datasource = module.get<UserAnswerDatasource>(UserAnswerDatasource);
+    datasource = module.get<GuestAnswerDatasource>(GuestAnswerDatasource);
   });
 
   afterEach(async () => {
@@ -32,16 +32,16 @@ describe('user-answer-datasource', () => {
   });
 
   it('save', async () => {
-    client.user_answer.create = jest.fn();
-    const userAnswer = UserAnswer.reconstruct({
+    client.guest_answer.create = jest.fn();
+    const guestAnswer = GuestAnswer.reconstruct({
       id: 'id_1',
-      userId: 'user_id_1',
-      userName: 'user_name_1',
+      guestId: 'guest_id_1',
+      guestName: 'guest_name_1',
       sessionId: 'session_id_1',
       answer: 'option_1',
       requestedAt: new Date('2022-11-20 12:51:10.20'),
     });
-    await datasource.save(userAnswer);
-    expect(client.user_answer.create).toHaveBeenCalledTimes(1);
+    await datasource.save(guestAnswer);
+    expect(client.guest_answer.create).toHaveBeenCalledTimes(1);
   });
 });

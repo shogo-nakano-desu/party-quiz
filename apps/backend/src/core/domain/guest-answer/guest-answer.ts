@@ -1,12 +1,12 @@
 import { Answer } from 'src/models/types';
 import { IdFactory } from '../common/id-factory';
 
-type BaseType = Omit<UserAnswer, 'constructor' | 'reconstruct' | 'create'>;
-export class UserAnswer {
+type BaseType = Omit<GuestAnswer, 'constructor' | 'reconstruct' | 'create'>;
+export class GuestAnswer {
   static idPrefix = 'usas';
   readonly id: string;
-  readonly userId: string;
-  readonly userName: string;
+  readonly guestId: string;
+  readonly guestName: string;
   readonly sessionId: string;
   readonly answer: Answer;
   readonly requestedAt: Date;
@@ -14,16 +14,16 @@ export class UserAnswer {
     Object.assign(this, init);
   }
 
-  public static reconstruct(init: BaseType): UserAnswer {
-    return new UserAnswer(init);
+  public static reconstruct(init: BaseType): GuestAnswer {
+    return new GuestAnswer(init);
   }
 
-  public static create(init: Omit<BaseType, 'id' | 'idPrefix'>): UserAnswer {
+  public static create(init: Omit<BaseType, 'id' | 'idPrefix'>): GuestAnswer {
     const id = IdFactory.generate(this.idPrefix);
-    return new UserAnswer({
+    return new GuestAnswer({
       id,
-      userId: init.userId,
-      userName: init.userName,
+      guestId: init.guestId,
+      guestName: init.guestName,
       sessionId: init.sessionId,
       answer: init.answer,
       requestedAt: init.requestedAt,

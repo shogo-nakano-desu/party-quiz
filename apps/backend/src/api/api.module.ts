@@ -2,7 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { UserAnswerModule } from './user-answer/user-answer.module';
+import { GuestAnswerModule } from './guest-answer/guest-answer.module';
 import { CoreModule } from '../core/core.module';
 import { SessionDetailModule } from './session-detail/session-detail.module';
 import { ResultSummaryModule } from './result-summary/result-summary.module';
@@ -21,7 +21,7 @@ import { QuestionModule } from './question/question.module';
       playground: false,
     }),
     CoreModule,
-    UserAnswerModule,
+    GuestAnswerModule,
     SessionDetailModule,
     ResultSummaryModule,
     QuestionModule,

@@ -1,5 +1,5 @@
-import { ResultSummaryByUserDto } from '../../../../api/result-summary/result-summary-by-user.dto';
+import { ResultSummaryByGuestDto } from '../../../../api/result-summary/result-summary-by-guest.dto';
 
 export interface ResultSummaryQueryService {
-  getResultSummaries(sessionId: string): Promise<ResultSummaryByUserDto[]>;
+  getResultSummaries(sessionId: string): Promise<ResultSummaryByGuestDto[]>;
 }

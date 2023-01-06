@@ -3,37 +3,37 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PrismaClient } from '@prisma/client';
-import { ResultSummaryByUserDto } from '../src/api/result-summary/result-summary-by-user.dto';
+import { ResultSummaryByGuestDto } from '../src/api/result-summary/result-summary-by-guest.dto';
 import { DatasourceClient } from '../src/core/infra/datasource.client';
 import { IdFactory } from '../src/core/domain/common/id-factory';
 import { QuestionDto } from 'src/api/question/question.dto';
 
 const gql = '/graphql';
 
-const userIds: string[] = Array.from({ length: 10 }, (_, i) => i).map((_) =>
-  IdFactory.generate('user'),
+const guestIds: string[] = Array.from({ length: 10 }, (_, i) => i).map((_) =>
+  IdFactory.generate('guest'),
 );
-const resultSummariesByUsers: ResultSummaryByUserDto[] = [
+const resultSummariesByGuests: ResultSummaryByGuestDto[] = [
   {
     rank: 1,
-    userId: userIds[2],
-    userName: 'jane-doe',
+    guestId: guestIds[2],
+    guestName: 'jane-doe',
     totalTime: 2000,
     numberOfCollectAnswers: 2,
     numberOfQuestions: 3,
   },
   {
     rank: 2,
-    userId: userIds[1],
-    userName: 'john-doe',
+    guestId: guestIds[1],
+    guestName: 'john-doe',
     totalTime: 29000,
     numberOfCollectAnswers: 1,
     numberOfQuestions: 3,
   },
   {
     rank: 3,
-    userId: userIds[0],
-    userName: 'shogo-nakano',
+    guestId: guestIds[0],
+    guestName: 'shogo-nakano',
     totalTime: 34000,
     numberOfCollectAnswers: 1,
     numberOfQuestions: 3,
@@ -128,22 +128,22 @@ describe('AppController (e2e)', () => {
       });
   });
 
-  it('test get resultSummariesByUsers', async () => {
+  it('test get resultSummariesByGuests', async () => {
     const sessionId = IdFactory.generate('sesn');
-    await createDataForTestResultSummary(client, sessionId, userIds);
+    await createDataForTestResultSummary(client, sessionId, guestIds);
     await await request(app.getHttpServer())
       .post(gql)
       .send({
         query: `{
-          getResultSummariesByUsers(sessionId: "${sessionId}") {
-            rank userId userName totalTime numberOfCollectAnswers numberOfQuestions
+          getResultSummariesByGuests(sessionId: "${sessionId}") {
+            rank guestId guestName totalTime numberOfCollectAnswers numberOfQuestions
           }
         }`,
       })
       .expect(200)
       .expect((res) => {
-        expect(res.body.data.getResultSummariesByUsers).toStrictEqual(
-          resultSummariesByUsers,
+        expect(res.body.data.getResultSummariesByGuests).toStrictEqual(
+          resultSummariesByGuests,
         );
       });
   });
@@ -176,30 +176,30 @@ describe('AppController (e2e)', () => {
       .expect(200);
   });
 
-  it('should create a new user_answer and have it added to the array', async () => {
-    const userId = IdFactory.generate('user');
+  it('should create a new guest_answer and have it added to the array', async () => {
+    const guestId = IdFactory.generate('guest');
     const sessionId = IdFactory.generate('sesn');
-    await createDataForTestCreateUserAnswer(client, userId, sessionId);
+    await createDataForTestCreateGuestAnswer(client, guestId, sessionId);
     return request(app.getHttpServer())
       .post(gql)
       .send({
-        query: `mutation {createUserAnswer(input: { 
-              userId: "${userId}" answer: "option_4" sessionId: "${sessionId}" requestedAt: "2022-12-25 03:00:22.01" 
+        query: `mutation {createGuestAnswer(input: { 
+              guestId: "${guestId}" answer: "option_4" sessionId: "${sessionId}" requestedAt: "2022-12-25 03:00:22.01" 
             })}`,
       })
       .expect(200);
   });
 });
 
-async function createDataForTestCreateUserAnswer(
+async function createDataForTestCreateGuestAnswer(
   client: PrismaClient,
-  userId: string,
+  guestId: string,
   sessionId: string,
 ): Promise<void> {
   const now = new Date();
-  await client.user.create({
+  await client.guest.create({
     data: {
-      id: userId,
+      id: guestId,
       name: 'shogo',
       created_at: now,
     },
@@ -337,7 +337,7 @@ async function createQuestionSessionSessionDetail(
 async function createDataForTestResultSummary(
   client: PrismaClient,
   sessionId: string,
-  userIds: string[],
+  guestIds: string[],
 ): Promise<void> {
   const now = new Date();
   const sessionId2 = IdFactory.generate('sesn');
@@ -349,24 +349,24 @@ async function createDataForTestResultSummary(
     (_, i) => i,
   ).map((_) => IdFactory.generate('sesd'));
 
-  const userAnswerIds: string[] = Array.from({ length: 10 }, (_, i) => i).map(
+  const guestAnswerIds: string[] = Array.from({ length: 10 }, (_, i) => i).map(
     (_) => IdFactory.generate('usas'),
   );
 
-  await client.user.createMany({
+  await client.guest.createMany({
     data: [
       {
-        id: userIds[0],
+        id: guestIds[0],
         name: 'shogo-nakano',
         created_at: now,
       },
       {
-        id: userIds[1],
+        id: guestIds[1],
         name: 'john-doe',
         created_at: now,
       },
       {
-        id: userIds[2],
+        id: guestIds[2],
         name: 'jane-doe',
         created_at: now,
       },
@@ -378,60 +378,60 @@ async function createDataForTestResultSummary(
     questionIds,
     sessionDetailIds,
   );
-  await client.user_answer.createMany({
+  await client.guest_answer.createMany({
     data: [
       {
-        id: userAnswerIds[0],
-        user_id: userIds[0],
+        id: guestAnswerIds[0],
+        guest_id: guestIds[0],
         session_id: sessionId,
         answer: 'option_4',
         requested_at: new Date('2022-12-27 15:10:02'),
       },
       {
-        id: userAnswerIds[1],
-        user_id: userIds[0],
+        id: guestAnswerIds[1],
+        guest_id: guestIds[0],
         session_id: sessionId,
         answer: 'option_2',
         requested_at: new Date('2022-12-27 15:10:05'),
       },
       {
-        id: userAnswerIds[2],
-        user_id: userIds[1],
+        id: guestAnswerIds[2],
+        guest_id: guestIds[1],
         session_id: sessionId,
         answer: 'option_3',
         requested_at: new Date('2022-12-27 15:10:32'),
       },
       {
-        id: userAnswerIds[3],
-        user_id: userIds[2],
+        id: guestAnswerIds[3],
+        guest_id: guestIds[2],
         session_id: sessionId,
         answer: 'option_3',
         requested_at: new Date('2022-12-27 15:10:01'),
       },
       {
-        id: userAnswerIds[4],
-        user_id: userIds[0],
+        id: guestAnswerIds[4],
+        guest_id: guestIds[0],
         session_id: sessionId,
         answer: 'option_1',
         requested_at: new Date('2022-12-27 15:11:31'),
       },
       {
-        id: userAnswerIds[5],
-        user_id: userIds[2],
+        id: guestAnswerIds[5],
+        guest_id: guestIds[2],
         session_id: sessionId,
         answer: 'option_1',
         requested_at: new Date('2022-12-27 15:11:03'),
       },
       {
-        id: userAnswerIds[6],
-        user_id: userIds[1],
+        id: guestAnswerIds[6],
+        guest_id: guestIds[1],
         session_id: sessionId,
         answer: 'option_3',
         requested_at: new Date('2022-12-27 15:11:00'),
       },
       {
-        id: userAnswerIds[7],
-        user_id: userIds[1],
+        id: guestAnswerIds[7],
+        guest_id: guestIds[1],
         session_id: sessionId,
         answer: 'option_3',
         requested_at: new Date('2022-12-27 15:10:34'),
