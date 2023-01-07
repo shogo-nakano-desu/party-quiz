@@ -5,8 +5,8 @@ import { ResultSummaryQueryService } from '../../../core/usecase/result-summary/
 import { SessionDetail } from '../../../core/domain/session-detail/session-detail';
 import { GuestAnswer } from '../../../core/domain/guest-answer/guest-answer';
 import { GuestAnswersAndSessionDetailsAggregate } from '../../../core/domain/aggregate/guest-answers-and-session-details-map/guest-answers-and-session-details-map';
-import { ResultSummaryByGuestDto } from 'src/api/result-summary/result-summary-by-guest.dto';
-import { ResultSummariesByGuests } from 'src/core/domain/aggregate/result-summary-by-guest/result-summary-by-guest';
+import { ResultSummaryByGuestDto } from '../../../api/result-summary/result-summary-by-guest.dto';
+import { ResultSummariesByGuests } from '../../../core/domain/aggregate/result-summary-by-guest/result-summary-by-guest';
 
 @Injectable()
 export class ResultSummaryQueryDatasource implements ResultSummaryQueryService {
