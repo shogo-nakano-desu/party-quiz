@@ -12,14 +12,21 @@ input EndSessionDetailInputParams {
   sessionDetailId: String!
 }
 
+input GuestAnswerInputParams {
+  answer: String!
+  guestId: String!
+  requestedAt: DateTime!
+  sessionId: String!
+}
+
 type Mutation {
-  createUserAnswer(input: UserAnswerInputParams!): Boolean!
+  createGuestAnswer(input: GuestAnswerInputParams!): Boolean!
   endSessionDetail(input: EndSessionDetailInputParams!): Boolean!
   startSessionDetail(input: StartSessionDetailInputParams!): Boolean!
 }
 
 type Query {
-  getResultSummariesByUsers(sessionId: ID!): [ResultSummaryByUserDto!]!
+  getResultSummariesByGuests(sessionId: ID!): [ResultSummaryByGuestDto!]!
   listQuestions(sessionId: ID!): [QuestionDto!]!
 }
 
@@ -35,7 +42,9 @@ type QuestionDto {
   sessionDetailId: String!
 }
 
-type ResultSummaryByUserDto {
+type ResultSummaryByGuestDto {
+  guestId: String!
+  guestName: String!
   numberOfCollectAnswers: Float!
   numberOfQuestions: Float!
 
@@ -44,18 +53,9 @@ type ResultSummaryByUserDto {
 
   """Calculated total time in milliseconds"""
   totalTime: Float!
-  userId: String!
-  userName: String!
 }
 
 input StartSessionDetailInputParams {
   sessionDetailId: String!
   startedAt: DateTime!
-}
-
-input UserAnswerInputParams {
-  answer: String!
-  requestedAt: DateTime!
-  sessionId: String!
-  userId: String!
 }

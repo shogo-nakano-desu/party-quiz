@@ -7,6 +7,7 @@
     "build:gql": "graphql-codegen --config graphql/codegen.yml",
     "start": "next start",
     "clean": "rm -rf ./node_modules && rm -rf ./dist && rm -rf ./.next",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint": "next lint"
   },
   "dependencies": {
@@ -38,6 +39,9 @@
     "@graphql-codegen/typescript-urql": "^3.7.3",
     "@graphql-codegen/urql-introspection": "^2.2.1",
     "@types/lodash": "^4.14.191",
-    "graphql": "^16.6.0"
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "graphql": "^16.6.0",
+    "prettier": "^2.3.2"
   }
 }

@@ -16,6 +16,7 @@
     "datasources",
     "desu",
     "GraphQLISODateTime",
+    "gsas",
     "nakano",
     "nestjs",
     "nextjs",
@@ -25,7 +26,6 @@
     "sesn",
     "shogo",
     "Urql",
-    "usas",
     "usecase"
   ],
   "ignoreWords": []

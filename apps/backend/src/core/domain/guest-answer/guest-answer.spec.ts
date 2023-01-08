@@ -1,11 +1,11 @@
-import { UserAnswer } from './user-answer';
+import { GuestAnswer } from './guest-answer';
 
-describe('user-answer', () => {
+describe('guest-answer', () => {
   it('reconstruct', () => {
     const now = new Date();
-    const answer = generateUserAnswer(now);
+    const answer = generateGuestAnswer(now);
     expect(answer.id).toStrictEqual('id');
-    expect(answer.userId).toStrictEqual('user-id');
+    expect(answer.guestId).toStrictEqual('guest-id');
     expect(answer.sessionId).toStrictEqual('session-id');
     expect(answer.answer).toStrictEqual('option_1');
     expect(answer.requestedAt.getTime()).toStrictEqual(now.getTime());
@@ -13,27 +13,27 @@ describe('user-answer', () => {
 
   it('create', () => {
     const now = new Date();
-    const answer = UserAnswer.create({
-      userId: 'user-id',
-      userName: 'user-name',
+    const answer = GuestAnswer.create({
+      guestId: 'guest-id',
+      guestName: 'guest-name',
       sessionId: 'session-id',
       answer: 'option_1',
       requestedAt: now,
     });
-    expect(answer.id.substring(0, 5)).toStrictEqual('usas-');
-    expect(answer.userId).toStrictEqual('user-id');
-    expect(answer.userName).toStrictEqual('user-name');
+    expect(answer.id.substring(0, 5)).toStrictEqual('gsas-');
+    expect(answer.guestId).toStrictEqual('guest-id');
+    expect(answer.guestName).toStrictEqual('guest-name');
     expect(answer.sessionId).toStrictEqual('session-id');
     expect(answer.answer).toStrictEqual('option_1');
     expect(answer.requestedAt.getTime()).toStrictEqual(now.getTime());
   });
 });
 
-function generateUserAnswer(now: Date): UserAnswer {
-  return UserAnswer.reconstruct({
+function generateGuestAnswer(now: Date): GuestAnswer {
+  return GuestAnswer.reconstruct({
     id: 'id',
-    userId: 'user-id',
-    userName: 'user-name',
+    guestId: 'guest-id',
+    guestName: 'guest-name',
     sessionId: 'session-id',
     answer: 'option_1',
     requestedAt: now,

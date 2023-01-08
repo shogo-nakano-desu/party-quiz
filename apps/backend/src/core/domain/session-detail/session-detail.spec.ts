@@ -1,3 +1,4 @@
+import { addSeconds } from 'date-fns';
 import { SessionDetail } from './session-detail';
 
 describe('session-detail', () => {
@@ -34,7 +35,7 @@ describe('session-detail', () => {
     const now = new Date();
     const detail = generateSessionDetail(now);
     const after = new Date();
-    const updatedDetail = SessionDetail.updateStartedAt(after, detail);
+    const updatedDetail = SessionDetail.updateStartedAndEndedAt(after, detail);
 
     expect(updatedDetail).toStrictEqual(
       SessionDetail.reconstruct({
@@ -44,7 +45,7 @@ describe('session-detail', () => {
         questionId: 'question-id',
         answer: 'option_1',
         startedAt: after,
-        endedAt: now,
+        endedAt: addSeconds(after, 30),
       }),
     );
   });

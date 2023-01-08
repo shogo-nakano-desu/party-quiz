@@ -1,16 +1,16 @@
 import { SessionDetail } from '../../session-detail/session-detail';
-import { UserAnswer } from '../../user-answer/user-answer';
+import { GuestAnswer } from '../../guest-answer/guest-answer';
 
-export class UserAnswersAndSessionDetailsAggregate {
-  readonly pairs: [UserAnswer, SessionDetail][];
+export class GuestAnswersAndSessionDetailsAggregate {
+  readonly pairs: [GuestAnswer, SessionDetail][];
 
   public constructor(
-    userAnswers: UserAnswer[],
+    guestAnswers: GuestAnswer[],
     sessionDetails: SessionDetail[],
   ) {
-    const pairs = new Map<UserAnswer, SessionDetail>();
+    const pairs = new Map<GuestAnswer, SessionDetail>();
     // first, sort arrays
-    userAnswers.sort(
+    guestAnswers.sort(
       (a, b) => a.requestedAt.getTime() - b.requestedAt.getTime(),
     );
     sessionDetails.sort(
@@ -18,7 +18,7 @@ export class UserAnswersAndSessionDetailsAggregate {
     );
 
     //TODO: to increase performance, use binary search
-    userAnswers.forEach((answer) => {
+    guestAnswers.forEach((answer) => {
       sessionDetails.forEach((detail) => {
         const answerRequestedAt = answer.requestedAt.getTime();
         if (
@@ -38,7 +38,7 @@ export class UserAnswersAndSessionDetailsAggregate {
       .filter(
         (pair, i, pairs) =>
           i === 0 ||
-          pair[0].userId !== pairs[i - 1][0].userId ||
+          pair[0].guestId !== pairs[i - 1][0].guestId ||
           pair[1].id !== pairs[i - 1][1].id,
       );
 

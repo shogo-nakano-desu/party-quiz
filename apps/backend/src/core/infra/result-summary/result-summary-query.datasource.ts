@@ -2,28 +2,28 @@ import { Injectable, Inject } from '@nestjs/common';
 import { DATASOURCE_CLIENT } from '../../../core/constants';
 import { DatasourceClient } from '../datasource.client';
 import { ResultSummaryQueryService } from '../../../core/usecase/result-summary/query/result-summary-query-service';
-import { ResultSummaryByUserDto } from '../../../api/result-summary/result-summary-by-user.dto';
 import { SessionDetail } from '../../../core/domain/session-detail/session-detail';
-import { UserAnswer } from '../../../core/domain/user-answer/user-answer';
-import { UserAnswersAndSessionDetailsAggregate } from '../../../core/domain/aggregate/user-answers-and-session-details-map/user-answers-and-session-details-map';
-import { ResultSummariesByUsers } from '../../../core/domain/aggregate/result-summary-by-user/result-summary-by-user';
+import { GuestAnswer } from '../../../core/domain/guest-answer/guest-answer';
+import { GuestAnswersAndSessionDetailsAggregate } from '../../../core/domain/aggregate/guest-answers-and-session-details-map/guest-answers-and-session-details-map';
+import { ResultSummaryByGuestDto } from '../../../api/result-summary/result-summary-by-guest.dto';
+import { ResultSummariesByGuests } from '../../../core/domain/aggregate/result-summary-by-guest/result-summary-by-guest';
 
 @Injectable()
 export class ResultSummaryQueryDatasource implements ResultSummaryQueryService {
   constructor(@Inject(DATASOURCE_CLIENT) private client: DatasourceClient) {}
   async getResultSummaries(
     sessionId: string,
-  ): Promise<ResultSummaryByUserDto[]> {
-    const userAnswers = (
-      await this.client.user_answer.findMany({
+  ): Promise<ResultSummaryByGuestDto[]> {
+    const guestAnswers = (
+      await this.client.guest_answer.findMany({
         where: { session_id: sessionId },
-        include: { user: { select: { name: true } } },
+        include: { guest: { select: { name: true } } },
       })
     ).map((answer) =>
-      UserAnswer.reconstruct({
+      GuestAnswer.reconstruct({
         id: answer.id,
-        userId: answer.user_id,
-        userName: answer.user.name,
+        guestId: answer.guest_id,
+        guestName: answer.guest.name,
         sessionId: answer.session_id,
         answer: answer.answer,
         requestedAt: answer.requested_at,
@@ -47,20 +47,20 @@ export class ResultSummaryQueryDatasource implements ResultSummaryQueryService {
       });
     });
 
-    const aggs = new UserAnswersAndSessionDetailsAggregate(
-      userAnswers,
+    const aggs = new GuestAnswersAndSessionDetailsAggregate(
+      guestAnswers,
       sessionDetails,
     );
 
-    const resultSummaries = new ResultSummariesByUsers(
+    const resultSummaries = new ResultSummariesByGuests(
       aggs,
       [...new Set(sessionDetails.map((detail) => detail.questionId))].length,
     );
-    return resultSummaries.resultSummariesByUsers.map((res) => {
-      return new ResultSummaryByUserDto({
+    return resultSummaries.resultSummariesByGuests.map((res) => {
+      return new ResultSummaryByGuestDto({
         rank: res.rank,
-        userId: res.userId,
-        userName: res.userName,
+        guestId: res.guestId,
+        guestName: res.guestName,
         totalTime: res.totalTime,
         numberOfCollectAnswers: res.numberOfCollectAnswers,
         numberOfQuestions: res.numberOfQuestions,
