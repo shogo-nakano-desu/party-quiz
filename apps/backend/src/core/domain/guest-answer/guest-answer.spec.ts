@@ -20,7 +20,7 @@ describe('guest-answer', () => {
       answer: 'option_1',
       requestedAt: now,
     });
-    expect(answer.id.substring(0, 5)).toStrictEqual('usas-');
+    expect(answer.id.substring(0, 5)).toStrictEqual('gsas-');
     expect(answer.guestId).toStrictEqual('guest-id');
     expect(answer.guestName).toStrictEqual('guest-name');
     expect(answer.sessionId).toStrictEqual('session-id');
