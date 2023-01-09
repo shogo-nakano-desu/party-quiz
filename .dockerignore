@@ -1,0 +1,13 @@
+.git
+.yarn/cache
+docker
+node_modules
+*/*/node_modules
+*/*/.env*
+.dockerignore
+.eslintrc.yml
+.gitignore
+.prettierrc
+docker-compose*
+Dockerfile*
+*.md
