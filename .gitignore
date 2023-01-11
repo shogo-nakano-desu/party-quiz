@@ -117,8 +117,4 @@ dist
 # GraphQL
 apps/web/graphql/generated.ts
 
-# Storybook
-apps/web/storybook-static
-
-# IntelliJ
-.idea/ s
+deploy.sh

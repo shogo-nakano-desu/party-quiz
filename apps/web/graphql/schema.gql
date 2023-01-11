@@ -27,6 +27,7 @@ type Mutation {
 
 type Query {
   getResultSummariesByGuests(sessionId: ID!): [ResultSummaryByGuestDto!]!
+  getSample: Boolean!
   listQuestions(sessionId: ID!): [QuestionDto!]!
 }
 

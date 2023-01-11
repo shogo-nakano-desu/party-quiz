@@ -7,6 +7,7 @@ import { CoreModule } from '../core/core.module';
 import { SessionDetailModule } from './session-detail/session-detail.module';
 import { ResultSummaryModule } from './result-summary/result-summary.module';
 import { QuestionModule } from './question/question.module';
+import { SampleModule } from './sample/sample.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { QuestionModule } from './question/question.module';
     SessionDetailModule,
     ResultSummaryModule,
     QuestionModule,
+    SampleModule,
   ],
 })
 export class ApiModule {}
