@@ -22,4 +22,4 @@ RUN yarn workspace backend build
 
 EXPOSE 3010
 
-CMD ["yarn workspace backend start:prod"]
+CMD ["yarn", "workspace", "backend", "start:prod"]
