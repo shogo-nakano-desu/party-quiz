@@ -119,7 +119,6 @@ function Answer() {
           SEND
         </Button>
       </Flex>
-      {/* </VStack> */}
     </Box>
   );
 }

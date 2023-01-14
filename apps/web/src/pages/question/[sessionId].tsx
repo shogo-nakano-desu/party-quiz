@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { addMilliseconds, addSeconds } from 'date-fns';
 
-function Session() {
+function Question() {
   const router = useRouter();
   const { sessionId } = router.query;
   const [{ data, fetching, error }] = useQuestionPageQuery({
@@ -57,4 +57,4 @@ function Session() {
   );
 }
 
-export default Session;
+export default Question;

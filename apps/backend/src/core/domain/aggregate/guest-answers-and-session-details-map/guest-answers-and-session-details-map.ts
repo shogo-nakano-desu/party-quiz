@@ -32,7 +32,9 @@ export class GuestAnswersAndSessionDetailsAggregate {
     const arrayOfPairs = Array.from(pairs.entries())
       .sort(
         // asc
-        (a, b) => b[0].requestedAt.getTime() - a[0].requestedAt.getTime(),
+        (a, b) =>
+          a[0].guestId.localeCompare(b[0].guestId) ||
+          b[0].requestedAt.getTime() - a[0].requestedAt.getTime(),
       )
       // filter only the latest answer
       .filter(
