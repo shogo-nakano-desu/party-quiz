@@ -6,7 +6,7 @@
     "build": "next build",
     "build:gql": "graphql-codegen --config graphql/codegen.yml",
     "start": "next start -p 8080",
-    "clean": "rm -rf ./node_modules && rm -rf ./dist && rm -rf ./.next",
+    "clean": "yarn prep && rm -rf ./node_modules && rm -rf ./dist && rm -rf ./.next",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "lint": "next lint"
   },
