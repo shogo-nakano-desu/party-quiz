@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.0.1",
+    "@chakra-ui/react": "^2.4.8",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@next/font": "13.0.7",
     "@types/node": "18.11.17",
     "@types/react": "18.0.26",
@@ -21,6 +24,7 @@
     "date-fns": "^2.29.3",
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
+    "framer-motion": "^6",
     "graphql-tag": "^2.12.6",
     "lodah": "^0.0.1-security",
     "next": "13.0.7",
