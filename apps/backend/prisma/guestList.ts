@@ -1,4 +1,4 @@
-export const userList = [
+export const guestList = [
   { name: 'shoji-mitsuhata', id: 'shoji-mitsuhata', created_at: new Date() },
   {
     name: 'hiroyuki-mitsuhata',
