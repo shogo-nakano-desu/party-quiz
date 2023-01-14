@@ -10,9 +10,7 @@ function Answer() {
   // TODO set session id
   const sessionId = 'sesn-1';
   const [answer, setAnswer] = useState<Answer>();
-  if (!isString(guestId)) {
-    throw new Error(`guestId should be a string. current guestId: ${guestId}`);
-  }
+  
 
   return (
     <>
@@ -24,6 +22,9 @@ function Answer() {
       <button
         onClick={() => {
           if (answer) {
+            if (!isString(guestId)) {
+              throw new Error(`guestId should be a string. current guestId: ${guestId}`);
+            }
             createAnswer({
               input: {
                 answer: answer,
