@@ -32,7 +32,9 @@ export class GuestAnswersAndSessionDetailsAggregate {
     const arrayOfPairs = Array.from(pairs.entries())
       .sort(
         // asc
-        (a, b) => b[0].requestedAt.getTime() - a[0].requestedAt.getTime(),
+        (a, b) =>
+          a[0].guestId.localeCompare(b[0].guestId) ||
+          b[0].requestedAt.getTime() - a[0].requestedAt.getTime(),
       )
       // filter only the latest answer
       .filter(
@@ -40,6 +42,7 @@ export class GuestAnswersAndSessionDetailsAggregate {
           i === 0 ||
           pair[0].guestId !== pairs[i - 1][0].guestId ||
           pair[1].id !== pairs[i - 1][1].id,
+        // guestID & sessionDetailIDが同じものが存在しない場合OK
       );
 
     this.pairs = arrayOfPairs;
