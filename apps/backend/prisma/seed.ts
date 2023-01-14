@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { userList } from './guestList';
+import { guestList } from './guestList';
 
 const prisma = new PrismaClient();
 async function main() {
@@ -15,7 +15,7 @@ async function main() {
   );
 
   await prisma.guest.createMany({
-    data: userList,
+    data: guestList,
   });
 }
 main()
