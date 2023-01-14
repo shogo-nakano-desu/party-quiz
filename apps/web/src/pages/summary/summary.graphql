@@ -1,0 +1,14 @@
+fragment SummaryPage_summary on ResultSummaryByGuestDto {
+  guestId
+  guestName
+  totalTime
+  rank
+  numberOfCollectAnswers
+  numberOfQuestions
+}
+
+query SummaryPage($sessionId: ID!) {
+  getResultSummariesByGuests(sessionId: $sessionId) {
+    ...SummaryPage_summary
+  }
+}

@@ -42,7 +42,6 @@ export class GuestAnswersAndSessionDetailsAggregate {
           i === 0 ||
           pair[0].guestId !== pairs[i - 1][0].guestId ||
           pair[1].id !== pairs[i - 1][1].id,
-        // guestID & sessionDetailIDが同じものが存在しない場合OK
       );
 
     this.pairs = arrayOfPairs;
