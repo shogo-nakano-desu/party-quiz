@@ -1,0 +1,17 @@
+.drinkMenu{
+    position: absolute;
+        width: 255px;
+        height: 54px;
+        left: 67px;
+        top: 50px;
+    
+        font-family: 'Cinzel';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 40px;
+        line-height: 54px;
+        /* ボックスの高さと同一 */
+    
+    
+        color: #000000;
+}
