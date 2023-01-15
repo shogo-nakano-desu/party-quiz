@@ -21,7 +21,7 @@ function Summary(){
         <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
             {data.getResultSummariesByGuests.map(d=>{
                 return (
-                        <Card>
+                        <Card key={d.guestId}>
                             <CardHeader>
                                 <Heading size='md'>{d.guestName}</Heading>
                             </CardHeader>
