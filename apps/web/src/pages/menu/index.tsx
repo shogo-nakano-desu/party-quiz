@@ -13,7 +13,7 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { menu } from './detail';
+import { menu } from '../../utils/detail';
 
 const TEXT_COLOR = 'blackAlpha.800';
 const MENU_SIZE = 12;
