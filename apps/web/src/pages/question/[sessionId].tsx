@@ -7,6 +7,8 @@ import {
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { addMilliseconds, addSeconds } from 'date-fns';
+import { Box, Flex, Heading } from '@chakra-ui/react';
+import { BASE_COLOR, OTHER_COLOR } from '../constants';
 
 function Question() {
   const router = useRouter();
@@ -16,7 +18,6 @@ function Question() {
   });
   const [question, setQuestion] = useState<QuestionDto>();
   const [_, startSessionDetail] = useStartSessionDetailMutation();
-  const [isStarted, setIsStarted] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -44,16 +45,58 @@ function Question() {
   if (fetching) return <p>Loading...</p>;
   if (error) return <p>Oh no... ${error.message}</p>;
   if (!question) return <p>No question</p>;
-  if (question.name === 'end') return <p>End</p>;
 
   return (
-    <>
-      <h1>{question.name}</h1>
-      <h3>{question.option_1}</h3>
-      <h3>{question.option_2}</h3>
-      <h3>{question.option_3}</h3>
-      <h3>{question.option_4}</h3>
-    </>
+    <Box background={BASE_COLOR} height={'100vh'} color={OTHER_COLOR}>
+      <Flex direction={'column'} height={'100vh'}>
+        <Box
+          backgroundColor={OTHER_COLOR}
+          width={10}
+          height={10}
+          position={'absolute'}
+          top={0}
+          left={0}
+        ></Box>
+        <Box
+          margin={10}
+          border={'1px'}
+          height={'100vh'}
+          borderColor={OTHER_COLOR}
+        >
+          <Flex
+            direction={'column'}
+            align={'center'}
+            justify={'center'}
+            justifyContent={'space-around'}
+            height={'90vh'}
+          >
+            {question.name === 'end' ? (
+              <Heading size={'4xl'}>End</Heading>
+            ) : (
+              <>
+                <Heading size={'4xl'} fontFamily={'Canela'}>
+                  Q{question.number}
+                </Heading>
+
+                <Heading size={'2xl'}>{question.name}</Heading>
+                <Heading size={'3xl'}>{question.option_1}</Heading>
+                <Heading size={'3xl'}>{question.option_2}</Heading>
+                <Heading size={'3xl'}>{question.option_3}</Heading>
+                <Heading size={'3xl'}>{question.option_4}</Heading>
+              </>
+            )}
+          </Flex>
+        </Box>
+        <Box
+          backgroundColor={OTHER_COLOR}
+          width={10}
+          height={10}
+          position={'absolute'}
+          bottom={0}
+          right={0}
+        ></Box>
+      </Flex>
+    </Box>
   );
 }
 

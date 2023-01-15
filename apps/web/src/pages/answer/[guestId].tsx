@@ -5,6 +5,7 @@ import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { useControllableState } from '@chakra-ui/react';
 import { useCreateAnswerMutation } from '../../../graphql';
 import styles from './answer.module.css';
+import { BASE_COLOR, OTHER_COLOR } from '../constants';
 
 const answers = ['option_1', 'option_2', 'option_3', 'option_4'] as const;
 type Answer = (typeof answers)[number];
@@ -42,8 +43,6 @@ function Answer() {
       if (res) setIsLoading(false);
     }
   };
-  const BASE_COLOR = '#F8C2A2';
-  const OTHER_COLOR = '#8B3DA7';
 
   const buttons: { name: Answer; normal: string; hover: string }[] = [
     {
