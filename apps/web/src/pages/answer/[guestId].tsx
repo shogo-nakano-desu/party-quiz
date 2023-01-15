@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { useState } from 'react';
-import { useCreateAnswerMutation } from '../../../graphql';
 import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { useControllableState } from '@chakra-ui/react';
+import { useCreateAnswerMutation } from '../../../graphql';
+import styles from './answer.module.css';
+import { BASE_COLOR, OTHER_COLOR } from '../constants';
 
 const answers = ['option_1', 'option_2', 'option_3', 'option_4'] as const;
 type Answer = (typeof answers)[number];
@@ -40,75 +43,78 @@ function Answer() {
       if (res) setIsLoading(false);
     }
   };
-  const BASE_COLOR = '#E7C2A8';
-  const OTHER_COLOR = '#7A45A0';
-  const ACTIVE_BUTTON_COLOR = '#6473FFB2';
+
+  const buttons: { name: Answer; normal: string; hover: string }[] = [
+    {
+      name: 'option_1',
+      normal: '/buttons/a.png',
+      hover: '/buttons/a_hover.png',
+    },
+    {
+      name: 'option_2',
+      normal: '/buttons/b.png',
+      hover: '/buttons/b_hover.png',
+    },
+    {
+      name: 'option_3',
+      normal: '/buttons/c.png',
+      hover: '/buttons/c_hover.png',
+    },
+    {
+      name: 'option_4',
+      normal: '/buttons/d.png',
+      hover: '/buttons/d_hover.png',
+    },
+  ];
 
   return (
-    <Box background={'#E7C2A8'} height={'100vh'}>
+    <Box background={BASE_COLOR} height={'100vh'}>
+      <Flex
+        direction={'column'}
+        justify={'end'}
+        align={'center'}
+        height={'20vh'}
+      >
+        <Heading fontSize={60} color={OTHER_COLOR} fontFamily={'Canela'}>
+          Answer
+        </Heading>
+      </Flex>
       <Flex
         direction={'column'}
         justify={'center'}
         align={'center'}
-        gridGap={5}
-        height={'100vh'}
+        height={'65vh'}
+        paddingTop={'10vh'}
+        paddingBottom={'10vh'}
       >
-        <Heading size={'3xl'} color={OTHER_COLOR}>
-          Answer
-        </Heading>
-        <Box
-          rounded={'base'}
-          fontSize={40}
-          width={'80%'}
-          height={'8%'}
-          as="button"
-          color={BASE_COLOR}
-          background={answer === 'option_1' ? ACTIVE_BUTTON_COLOR : OTHER_COLOR}
-          onClick={() => setInternalAnswer('option_1')}
-        >
-          A
+        <Box>
+          {buttons.map((button) => {
+            return (
+              <Image
+                className={styles.image}
+                key={button.name}
+                src={answer === button.name ? button.hover : button.normal}
+                alt={button.name}
+                width={400}
+                height={50}
+                onClick={() => setInternalAnswer(button.name)}
+              />
+            );
+          })}
         </Box>
-        <Box
-          rounded={'base'}
-          fontSize={40}
-          width={'80%'}
-          height={'8%'}
-          as="button"
-          color={BASE_COLOR}
-          background={answer === 'option_2' ? ACTIVE_BUTTON_COLOR : OTHER_COLOR}
-          onClick={() => setInternalAnswer('option_2')}
-        >
-          B
-        </Box>
-        <Box
-          rounded={'base'}
-          fontSize={40}
-          width={'80%'}
-          height={'8%'}
-          as="button"
-          color={BASE_COLOR}
-          background={answer === 'option_3' ? ACTIVE_BUTTON_COLOR : OTHER_COLOR}
-          onClick={() => setInternalAnswer('option_3')}
-        >
-          C
-        </Box>
-        <Box
-          rounded={'base'}
-          fontSize={40}
-          width={'80%'}
-          height={'8%'}
-          as="button"
-          color={BASE_COLOR}
-          background={answer === 'option_4' ? ACTIVE_BUTTON_COLOR : OTHER_COLOR}
-          onClick={() => setInternalAnswer('option_4')}
-        >
-          D
-        </Box>
+      </Flex>
+      <Flex
+        direction={'column'}
+        justify={'center'}
+        align={'center'}
+        height={'15vh'}
+      >
         <Button
-          fontSize={30}
-          height={'8%'}
-          width={'60%'}
-          rounded={'base'}
+          fontFamily={'Avenir'}
+          fontSize={40}
+          height={'70%'}
+          width={'62%'}
+          rounded={18}
           color={OTHER_COLOR}
           background={BASE_COLOR}
           borderColor={OTHER_COLOR}
