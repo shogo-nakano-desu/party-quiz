@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { guest_answer, PrismaClient } from '@prisma/client';
+import { addSeconds } from 'date-fns';
 import { guestList } from './guestList';
 
 const prisma = new PrismaClient();
@@ -62,80 +63,97 @@ async function createAnswer(
   const guests = guestIds.map((id) => {
     return { name: id, id, created_at: now };
   });
-  await client.guest.createMany({ data: guests });
+  const dummyGuests = [...Array(20).keys()].map((i) => {
+    return {
+      id: `dummy-guest-id-${i}`,
+      name: `dummy-guest-name-${i}`,
+      created_at: now,
+    };
+  });
+  await client.guest.createMany({ data: guests.concat(dummyGuests) });
+  const dummyAnswers: guest_answer[] = [...Array(20).keys()].map((i) => {
+    return {
+      id: `dummy-id-${i}`,
+      guest_id: `dummy-guest-id-${i}`,
+      session_id: sessionId,
+      answer: 'option_1',
+      requested_at: addSeconds(new Date('2023-01-14 10:00:1.21'), i),
+    };
+  });
+  const answers: guest_answer[] = [
+    {
+      id: guestAnswerIds[0],
+      guest_id: guestIds[0],
+      session_id: sessionId,
+      answer: 'option_2',
+      requested_at: new Date('2023-01-14 10:00:01.11'),
+    },
+    {
+      id: guestAnswerIds[1],
+      guest_id: guestIds[0],
+      session_id: sessionId,
+      answer: 'option_4',
+      requested_at: new Date('2023-01-14 10:00:32.21'),
+    },
+    {
+      id: guestAnswerIds[2],
+      guest_id: guestIds[1],
+      session_id: sessionId,
+      answer: 'option_2',
+      requested_at: new Date('2023-01-14 10:00:05.32'),
+    },
+    {
+      id: guestAnswerIds[3],
+      guest_id: guestIds[1],
+      session_id: sessionId,
+      answer: 'option_4',
+      requested_at: new Date('2023-01-14 10:00:40.42'),
+    },
+    {
+      id: guestAnswerIds[4],
+      guest_id: guestIds[1],
+      session_id: sessionId,
+      answer: 'option_4',
+      requested_at: new Date('2023-01-14 10:00:59.53'),
+    },
+    {
+      id: guestAnswerIds[5],
+      guest_id: guestIds[2],
+      session_id: sessionId,
+      answer: 'option_2',
+      requested_at: new Date('2023-01-14 10:00:05.43'),
+    },
+    {
+      id: guestAnswerIds[6],
+      guest_id: guestIds[2],
+      session_id: sessionId,
+      answer: 'option_4',
+      requested_at: new Date('2023-01-14 10:00:45.34'),
+    },
+    {
+      id: guestAnswerIds[7],
+      guest_id: guestIds[3],
+      session_id: sessionId,
+      answer: 'option_1',
+      requested_at: new Date('2023-01-14 10:00:20.34'),
+    },
+    {
+      id: guestAnswerIds[8],
+      guest_id: guestIds[3],
+      session_id: sessionId,
+      answer: 'option_4',
+      requested_at: new Date('2023-01-14 10:00:50.25'),
+    },
+    {
+      id: guestAnswerIds[9],
+      guest_id: guestIds[4],
+      session_id: sessionId,
+      answer: 'option_1',
+      requested_at: new Date('2023-01-14 10:00:50.11'),
+    },
+  ];
   await client.guest_answer.createMany({
-    data: [
-      {
-        id: guestAnswerIds[0],
-        guest_id: guestIds[0],
-        session_id: sessionId,
-        answer: 'option_2',
-        requested_at: new Date('2023-01-14 10:00:01'),
-      },
-      {
-        id: guestAnswerIds[1],
-        guest_id: guestIds[0],
-        session_id: sessionId,
-        answer: 'option_4',
-        requested_at: new Date('2023-01-14 10:00:32'),
-      },
-      {
-        id: guestAnswerIds[2],
-        guest_id: guestIds[1],
-        session_id: sessionId,
-        answer: 'option_2',
-        requested_at: new Date('2023-01-14 10:00:05'),
-      },
-      {
-        id: guestAnswerIds[3],
-        guest_id: guestIds[1],
-        session_id: sessionId,
-        answer: 'option_4',
-        requested_at: new Date('2023-01-14 10:00:40'),
-      },
-      {
-        id: guestAnswerIds[4],
-        guest_id: guestIds[1],
-        session_id: sessionId,
-        answer: 'option_4',
-        requested_at: new Date('2023-01-14 10:00:59'),
-      },
-      {
-        id: guestAnswerIds[5],
-        guest_id: guestIds[2],
-        session_id: sessionId,
-        answer: 'option_2',
-        requested_at: new Date('2023-01-14 10:00:05'),
-      },
-      {
-        id: guestAnswerIds[6],
-        guest_id: guestIds[2],
-        session_id: sessionId,
-        answer: 'option_4',
-        requested_at: new Date('2023-01-14 10:00:45'),
-      },
-      {
-        id: guestAnswerIds[7],
-        guest_id: guestIds[3],
-        session_id: sessionId,
-        answer: 'option_1',
-        requested_at: new Date('2023-01-14 10:00:20'),
-      },
-      {
-        id: guestAnswerIds[8],
-        guest_id: guestIds[3],
-        session_id: sessionId,
-        answer: 'option_4',
-        requested_at: new Date('2023-01-14 10:00:50'),
-      },
-      {
-        id: guestAnswerIds[9],
-        guest_id: guestIds[4],
-        session_id: sessionId,
-        answer: 'option_1',
-        requested_at: new Date('2023-01-14 10:00:50'),
-      },
-    ],
+    data: answers.concat(dummyAnswers),
   });
 }
 

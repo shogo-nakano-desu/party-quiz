@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardHeader, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardHeader, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSummaryPageQuery } from "../../../graphql";
 
@@ -18,23 +18,24 @@ function Summary(){
         <Heading>
             結果発表！
         </Heading>
-        <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-            {data.getResultSummariesByGuests.map(d=>{
+        <Flex direction={'row'} wrap={'wrap'} justify={'space-around'} alignItems={'center'} height={'80vh'}>
+            {/* 条件分岐で１−３位は色が変わるようにする */}
+            {data.getResultSummariesByGuests.slice(0,15).map((d,i)=>{
                 return (
-                        <Card key={d.guestId}>
+                        <Card key={d.guestId} width={'18%'}>
                             <CardHeader>
                                 <Heading size='md'>{d.guestName}</Heading>
                             </CardHeader>
                             <CardBody>
                                 <Text>正当数 : {d.numberOfCollectAnswers}/{d.numberOfQuestions}</Text>
-                                <Text>かかった時間 : {d.totalTime/1000}秒</Text>
+                                <Text>かかった時間 : {(d.totalTime/1000).toFixed(2)}秒</Text>
                             </CardBody>
                         </Card>
                     )
             })
                 
             }
-        </SimpleGrid>
+        </Flex>
         </>
     )
 }
