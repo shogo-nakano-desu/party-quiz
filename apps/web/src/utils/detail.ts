@@ -1,4 +1,4 @@
-import { DrinkName } from '../pages/menu/name';
+import { DrinkName } from './name';
 
 // TODO ビールの説明を入れる
 export const menu: { name: DrinkName; detail: string }[] = [
