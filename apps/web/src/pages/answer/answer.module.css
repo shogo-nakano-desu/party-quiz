@@ -1,0 +1,12 @@
+.image{
+    margin-bottom: -20px;
+}
+@font-face {
+    font-family: 'Canela';
+    src: url('../../../public/fonts/CanelaText-Regular-Trial.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Avenir';
+    src: url('../../../public/fonts/Avenir.ttc');
+}
