@@ -7,6 +7,23 @@
   font-family: 'Avenir';
   src: url('../../public/fonts/Avenir.ttc');
 }
+@font-face {
+  font-family: 'ZenkakuGothicNew';
+  src: url('../../public/fonts/ZenKakuGothicNew-Regular.ttf');
+}
+@font-face {
+  font-family: 'Cinzel';
+  src: url('../../public/fonts/Cinzel-Regular.ttf');
+}
+@font-face {
+  font-family: 'Forum';
+  src: url('../../public/fonts/Forum-Regular.ttf');
+}
+
+.image {
+  margin-bottom: -20px;
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;

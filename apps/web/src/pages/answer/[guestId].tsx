@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { useControllableState } from '@chakra-ui/react';
 import { useCreateAnswerMutation } from '../../../graphql';
-import styles from './answer.module.css';
-import { BASE_COLOR, OTHER_COLOR } from '../constants';
+import { BASE_COLOR, OTHER_COLOR } from '../../utils/constants';
 
 const answers = ['option_1', 'option_2', 'option_3', 'option_4'] as const;
 type Answer = (typeof answers)[number];
@@ -91,7 +90,7 @@ function Answer() {
           {buttons.map((button) => {
             return (
               <Image
-                className={styles.image}
+                className={'image'}
                 key={button.name}
                 src={answer === button.name ? button.hover : button.normal}
                 alt={button.name}

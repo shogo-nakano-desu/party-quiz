@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { addMilliseconds, addSeconds } from 'date-fns';
 import { Box, Flex, Heading } from '@chakra-ui/react';
-import { BASE_COLOR, OTHER_COLOR } from '../constants';
+import { BASE_COLOR, OTHER_COLOR } from '../../utils/constants';
 
 function Question() {
   const router = useRouter();
