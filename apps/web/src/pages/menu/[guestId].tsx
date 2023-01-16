@@ -12,6 +12,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { menu } from '../../utils/detail';
 
@@ -20,6 +22,8 @@ const MENU_SIZE = 12;
 const MENU_MARGIN_TOP = 6;
 
 function Menu() {
+  const router = useRouter();
+  const { guestId } = router.query;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState('');
 
@@ -32,7 +36,7 @@ function Menu() {
             {name}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody fontFamily={'ZenkakuGothicNew'} fontSize={15}>
+          <ModalBody fontFamily={'ZenkakuGothicNew'} fontSize={15} whiteSpace={'pre-wrap'}>
             {menu.find((m) => m.name === name)?.detail}
           </ModalBody>
         </ModalContent>
@@ -501,7 +505,6 @@ function Menu() {
             <Text
               align={'center'}
               marginTop={MENU_MARGIN_TOP}
-              marginBottom={10}
               color={TEXT_COLOR}
               onClick={() => {
                 setName('ポール ジロー スパークリング グレープジュース 2022');
@@ -510,7 +513,17 @@ function Menu() {
             >
               ポール ジロー スパークリング グレープジュース 2022
             </Text>
+            <Text
+              align={'center'}
+              marginTop={MENU_MARGIN_TOP}
+              marginBottom={10}
+              color={TEXT_COLOR}
+            >
+              <Link href={`/answer/${guestId}`} >？？？</Link>
+            </Text>
           </Box>
+
+          
         </Flex>
       </Box>
     </>

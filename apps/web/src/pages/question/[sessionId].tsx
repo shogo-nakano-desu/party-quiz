@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import {
   QuestionDto,
   useQuestionPageQuery,
@@ -7,8 +8,10 @@ import {
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { addMilliseconds, addSeconds } from 'date-fns';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
 import { BASE_COLOR, OTHER_COLOR } from '../../utils/constants';
+
+const QUESTION_OPTION_SIZE = 200;
 
 function Question() {
   const router = useRouter();
@@ -77,12 +80,47 @@ function Question() {
                 <Heading size={'4xl'} fontFamily={'Canela'}>
                   Q{question.number}
                 </Heading>
-
                 <Heading size={'2xl'}>{question.name}</Heading>
-                <Heading size={'3xl'}>{question.option_1}</Heading>
-                <Heading size={'3xl'}>{question.option_2}</Heading>
-                <Heading size={'3xl'}>{question.option_3}</Heading>
-                <Heading size={'3xl'}>{question.option_4}</Heading>
+                <Grid templateColumns={'1fr 2fr'}>
+                  <Image
+                    src={'/buttons/quiz_a.png'}
+                    alt={'button_a'}
+                    width={QUESTION_OPTION_SIZE}
+                    height={QUESTION_OPTION_SIZE}
+                  />
+                  <Heading size={'3xl'} lineHeight={'160px'}>
+                    {question.option_1}
+                  </Heading>
+
+                  <Image
+                    src={'/buttons/quiz_b.png'}
+                    alt={'button_b'}
+                    width={QUESTION_OPTION_SIZE}
+                    height={QUESTION_OPTION_SIZE}
+                  />
+                  <Heading size={'3xl'} lineHeight={'160px'}>
+                    {question.option_2}
+                  </Heading>
+                  <Image
+                    src={'/buttons/quiz_c.png'}
+                    alt={'button_c'}
+                    width={QUESTION_OPTION_SIZE}
+                    height={QUESTION_OPTION_SIZE}
+                  />
+                  <Heading size={'3xl'} lineHeight={'160px'}>
+                    {question.option_3}
+                  </Heading>
+
+                  <Image
+                    src={'/buttons/quiz_d.png'}
+                    alt={'button_d'}
+                    width={QUESTION_OPTION_SIZE}
+                    height={QUESTION_OPTION_SIZE}
+                  />
+                  <Heading size={'3xl'} lineHeight={'160px'}>
+                    {question.option_4}
+                  </Heading>
+                </Grid>
               </>
             )}
           </Flex>
