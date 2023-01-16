@@ -32,7 +32,7 @@ function Menu() {
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontFamily={'Lora'} fontSize={15}>
+          <ModalHeader fontFamily={'ZenkakuGothicNew'} fontSize={15}>
             {name}
           </ModalHeader>
           <ModalCloseButton />
