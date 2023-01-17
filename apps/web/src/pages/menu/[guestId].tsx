@@ -36,7 +36,11 @@ function Menu() {
             {name}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody fontFamily={'ZenkakuGothicNew'} fontSize={15} whiteSpace={'pre-wrap'}>
+          <ModalBody
+            fontFamily={'ZenkakuGothicNew'}
+            fontSize={15}
+            whiteSpace={'pre-wrap'}
+          >
             {menu.find((m) => m.name === name)?.detail}
           </ModalBody>
         </ModalContent>
@@ -519,11 +523,9 @@ function Menu() {
               marginBottom={10}
               color={TEXT_COLOR}
             >
-              <Link href={`/answer/${guestId}`} >？？？</Link>
+              <Link href={`/answer/${guestId}`}>？？？</Link>
             </Text>
           </Box>
-
-          
         </Flex>
       </Box>
     </>

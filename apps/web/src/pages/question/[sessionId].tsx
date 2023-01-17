@@ -33,12 +33,14 @@ function Question() {
         setTimeout(() => {
           const start = addMilliseconds(addSeconds(now, i * 30), i * 1);
           setQuestion(q);
-          startSessionDetail({
-            input: {
-              sessionDetailId: q.sessionDetailId,
-              startedAt: start!.toISOString(),
-            },
-          });
+          if (i !== questions.length - 1) {
+            startSessionDetail({
+              input: {
+                sessionDetailId: q.sessionDetailId,
+                startedAt: start!.toISOString(),
+              },
+            });
+          }
         }, 30001 * i);
       });
     }
