@@ -46,7 +46,7 @@ function Summary() {
             <Heading size={'2xl'} fontFamily={'Canela'}>
               結果発表！！！
             </Heading>
-            {data.getResultSummariesByGuests.slice(0, 7).map((d) => {
+            {data.getResultSummariesByGuests.slice(0, 5).map((d) => {
               return (
                 <>
                   <Text size={'l'} lineHeight={'160px'}>

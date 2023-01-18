@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { addMilliseconds, addSeconds } from 'date-fns';
 import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
 import { BASE_COLOR, OTHER_COLOR } from '../../utils/constants';
+import Link from 'next/link';
 
 const QUESTION_OPTION_SIZE = 200;
 
@@ -76,21 +77,27 @@ function Question() {
             height={'90vh'}
           >
             {question.name === 'end' ? (
-              <Heading size={'4xl'}>End</Heading>
+              <Heading size={'4xl'}>
+                <Link href={`/explanation/${sessionId}`}>End</Link>
+              </Heading>
             ) : (
               <>
                 <Heading size={'4xl'} fontFamily={'Canela'}>
                   Q{question.number}
                 </Heading>
                 <Heading size={'2xl'}>{question.name}</Heading>
-                <Grid templateColumns={'1fr 2fr'}>
+                <Grid templateColumns={'1fr 3fr'}>
                   <Image
                     src={'/buttons/quiz_a.png'}
                     alt={'button_a'}
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_1}
                   </Heading>
 
@@ -100,7 +107,11 @@ function Question() {
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_2}
                   </Heading>
                   <Image
@@ -109,7 +120,11 @@ function Question() {
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_3}
                   </Heading>
 
@@ -119,7 +134,11 @@ function Question() {
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_4}
                   </Heading>
                 </Grid>
