@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { addMilliseconds, addSeconds } from 'date-fns';
 import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
 import { BASE_COLOR, OTHER_COLOR } from '../../utils/constants';
+import Link from 'next/link';
 
 const QUESTION_OPTION_SIZE = 200;
 
@@ -76,7 +77,9 @@ function Question() {
             height={'90vh'}
           >
             {question.name === 'end' ? (
-              <Heading size={'4xl'}>End</Heading>
+              <Heading size={'4xl'}>
+                <Link href={`/explanation/${sessionId}`}>End</Link>
+              </Heading>
             ) : (
               <>
                 <Heading size={'4xl'} fontFamily={'Canela'}>
