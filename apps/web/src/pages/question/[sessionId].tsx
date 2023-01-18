@@ -83,14 +83,18 @@ function Question() {
                   Q{question.number}
                 </Heading>
                 <Heading size={'2xl'}>{question.name}</Heading>
-                <Grid templateColumns={'1fr 2fr'}>
+                <Grid templateColumns={'1fr 3fr'}>
                   <Image
                     src={'/buttons/quiz_a.png'}
                     alt={'button_a'}
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_1}
                   </Heading>
 
@@ -100,7 +104,11 @@ function Question() {
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_2}
                   </Heading>
                   <Image
@@ -109,7 +117,11 @@ function Question() {
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_3}
                   </Heading>
 
@@ -119,7 +131,11 @@ function Question() {
                     width={QUESTION_OPTION_SIZE}
                     height={QUESTION_OPTION_SIZE}
                   />
-                  <Heading size={'3xl'} lineHeight={'160px'}>
+                  <Heading
+                    size={'3xl'}
+                    lineHeight={'160px'}
+                    textAlign={'center'}
+                  >
                     {question.option_4}
                   </Heading>
                 </Grid>
