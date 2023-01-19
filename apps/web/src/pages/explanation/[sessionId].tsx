@@ -1,13 +1,9 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import {
-  QuestionDto,
   useQuestionPageQuery,
-  useStartSessionDetailMutation,
 } from '../../../graphql';
 import { useState } from 'react';
-import { useEffect } from 'react';
-import { addMilliseconds, addSeconds } from 'date-fns';
 import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
 import { BASE_COLOR, OTHER_COLOR } from '../../utils/constants';
 
