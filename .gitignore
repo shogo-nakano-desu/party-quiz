@@ -119,4 +119,4 @@ dist
 # GraphQL
 apps/web/graphql/generated.ts
 
-deploy.sh
+deploy-command.txt
