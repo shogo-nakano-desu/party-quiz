@@ -26,6 +26,7 @@ coverage
 .nyc_output
 
 apps/backend/prisma/prod_initial.sql
+apps/backend/prisma/prod_guest_list.sql
 
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -118,5 +119,6 @@ dist
 
 # GraphQL
 apps/web/graphql/generated.ts
+
 
 deploy-command.txt
