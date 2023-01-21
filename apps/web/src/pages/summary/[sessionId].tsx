@@ -10,8 +10,31 @@ function Summary() {
     variables: { sessionId: `${sessionId}` },
   });
 
-  if (!data) return <p>There is no summary...</p>;
-  if (fetching) return <p>Loading...</p>;
+  if (!data)
+    return (
+      <Box
+        background={BASE_COLOR}
+        height={'100vh'}
+        color={OTHER_COLOR}
+        overflow={'hidden'}
+      >
+        <Flex direction={'column'} height={'100%'}>
+          <Heading>Loading...</Heading>
+        </Flex>
+      </Box>
+    );
+  if (fetching) return (
+      <Box
+        background={BASE_COLOR}
+        height={'100vh'}
+        color={OTHER_COLOR}
+        overflow={'hidden'}
+      >
+        <Flex direction={'column'} height={'100%'}>
+          <Heading>Loading...</Heading>
+        </Flex>
+      </Box>
+    );
   if (error) return <p>Oh no... ${error.message}</p>;
 
   const winner = data.getResultSummariesByGuests.slice(0, 1)[0];
