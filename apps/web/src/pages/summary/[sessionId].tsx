@@ -18,19 +18,30 @@ function Summary() {
         color={OTHER_COLOR}
         overflow={'hidden'}
       >
-        <Flex direction={'column'} height={'100%'}>
+        <Flex
+          direction={'column'}
+          align={'center'}
+          justify={'center'}
+          height={'100%'}
+        >
           <Heading>Loading...</Heading>
         </Flex>
       </Box>
     );
-  if (fetching) return (
+  if (fetching)
+    return (
       <Box
         background={BASE_COLOR}
         height={'100vh'}
         color={OTHER_COLOR}
         overflow={'hidden'}
       >
-        <Flex direction={'column'} height={'100%'}>
+        <Flex
+          direction={'column'}
+          align={'center'}
+          justify={'center'}
+          height={'100%'}
+        >
           <Heading>Loading...</Heading>
         </Flex>
       </Box>
