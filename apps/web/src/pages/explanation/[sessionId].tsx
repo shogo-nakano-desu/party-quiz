@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import {
-  useQuestionPageQuery,
-} from '../../../graphql';
+import { useQuestionPageQuery } from '../../../graphql';
 import { useState } from 'react';
 import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
 import { BASE_COLOR, OTHER_COLOR } from '../../utils/constants';
