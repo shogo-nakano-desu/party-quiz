@@ -17,7 +17,7 @@ COPY ./apps/backend ./apps/backend
 ENV NODE_ENV=production
 RUN yarn workspace backend prisma generate
 RUN yarn workspace backend build
-RUN yarn workspace backend prisma migrate deploy
+# RUN yarn workspace backend prisma migrate deploy
 
 EXPOSE 3010
 
