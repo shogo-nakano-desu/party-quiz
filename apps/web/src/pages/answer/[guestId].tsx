@@ -72,9 +72,9 @@ function Answer() {
         direction={'column'}
         justify={'end'}
         align={'center'}
-        height={'20vh'}
+        height={'18vh'}
       >
-        <Heading fontSize={60} color={OTHER_COLOR} fontFamily={'Canela'}>
+        <Heading fontSize={57} color={OTHER_COLOR} fontFamily={'Canela'}>
           Answer
         </Heading>
       </Flex>
@@ -83,7 +83,7 @@ function Answer() {
         justify={'center'}
         align={'center'}
         height={'65vh'}
-        paddingTop={'10vh'}
+        paddingTop={'5vh'}
         paddingBottom={'10vh'}
       >
         <Box>
@@ -104,9 +104,10 @@ function Answer() {
       </Flex>
       <Flex
         direction={'column'}
-        justify={'center'}
+        // justify={'center'}
         align={'center'}
-        height={'15vh'}
+        height={'12vh'}
+        marginBottom={'10px'}
       >
         <Button
           fontFamily={'Avenir'}
