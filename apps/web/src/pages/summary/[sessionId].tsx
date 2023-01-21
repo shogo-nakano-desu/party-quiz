@@ -14,6 +14,8 @@ function Summary() {
   if (fetching) return <p>Loading...</p>;
   if (error) return <p>Oh no... ${error.message}</p>;
 
+  const winner = data.getResultSummariesByGuests.slice(0, 1)[0];
+
   return (
     <Box
       background={BASE_COLOR}
@@ -41,21 +43,56 @@ function Summary() {
             align={'center'}
             justify={'center'}
             justifyContent={'space-around'}
-            height={'100%'}
+            height={'40%'}
           >
-            <Heading size={'2xl'} fontFamily={'Canela'}>
-              結果発表！！！
+            <Heading fontSize={70} fontFamily={'Canela'}>
+              Ranking
             </Heading>
-            {data.getResultSummariesByGuests.slice(0, 5).map((d) => {
+            <Box>
+              <Heading fontSize={55} textAlign={'center'}>
+                👑第{winner.rank}位👑
+                <br />
+                {winner.guestName}
+              </Heading>
+              <Heading fontSize={45} textAlign={'center'}>
+                正当数：{winner.numberOfCollectAnswers}/
+                {winner.numberOfQuestions}
+              </Heading>
+              <Heading fontSize={45} textAlign={'center'}>
+                所要時間：{(winner.totalTime / 1000).toFixed(2)}秒
+              </Heading>
+            </Box>
+          </Flex>
+          <Flex
+            wrap={'wrap'}
+            direction={'row'}
+            width={'100%'}
+            textAlign={'center'}
+            // margin={5}
+          >
+            {data.getResultSummariesByGuests.slice(1, 5).map((d) => {
               return (
                 <>
-                  <Text size={'l'} lineHeight={'160px'}>
-                    第{d.rank}位{d.guestName}
-                  </Text>
-                  <Text>
-                    正当数：{d.numberOfCollectAnswers}/{d.numberOfQuestions}
-                  </Text>
-                  <Text>所要時間：{(d.totalTime / 1000).toFixed(2)}秒</Text>
+                  <Box width={'50%'} marginTop={20} textAlign={'center'}>
+                    <Heading fontSize={d.rank === 2 || d.rank === 3 ? 45 : 35}>
+                      {d.rank === 2 || d.rank === 3 ? '🎉' : ''}第{d.rank}位
+                      {d.rank === 2 || d.rank === 3 ? '🎉' : ''}
+                      <br />
+                      {d.guestName}
+                    </Heading>
+                    <Heading
+                      fontSize={d.rank === 2 || d.rank === 3 ? 35 : 25}
+                      textAlign={'center'}
+                    >
+                      正当数：{d.numberOfCollectAnswers}/{d.numberOfQuestions}
+                    </Heading>
+                    <Heading
+                      fontSize={d.rank === 2 || d.rank === 3 ? 35 : 25}
+                      textAlign={'center'}
+                    >
+                      所要時間：{(d.totalTime / 1000).toFixed(2)}秒
+                    </Heading>
+                  </Box>
                 </>
               );
             })}
