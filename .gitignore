@@ -27,6 +27,7 @@ coverage
 
 apps/backend/prisma/prod_initial.sql
 apps/backend/prisma/prod_guest_list.sql
+apps/backend/prisma/guestList.ts
 
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
